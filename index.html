@@ -8,8 +8,7 @@
 
 <!-- =================================================================
      [SNS / 카카오톡 공유 최적화 메타태그 (Open Graph)]
-     * 배포 후 '대표님도메인.vercel.app' 부분을 실제 도메인 주소로 변경하세요.
-     * 같은 폴더에 1200x630px 크기의 og-image.png 이미지를 업로드해 두시면 됩니다.
+     * 배포 후 'bacommunication.vercel.app'을 실제 도메인으로 변경하세요.
 ================================================================== -->
 <meta property="og:title" content="내 매장 네이버 플레이스 자가진단 | 비에이커뮤니케이션">
 <meta property="og:description" content="우리 매장 지도 점수와 당장 바꿔야 할 3가지 (2분 무료 점검)">
@@ -33,6 +32,8 @@
   --warn-bg: #fdf5f0;
   --kakao: #fee500;
   --kakao-ink: #191919;
+  --blue: #1d4ed8;
+  --blue-bg: #eff6ff;
   box-sizing: border-box;
 }
 
@@ -48,6 +49,8 @@
     --line: #2d332e;
     --warn: #e08a5e;
     --warn-bg: #261e1b;
+    --blue: #60a5fa;
+    --blue-bg: #172554;
   }
 }
 
@@ -92,7 +95,7 @@ main {
 }
 
 h1 { font-size: 26px; line-height: 1.35; margin: 4px 0 10px; font-weight: 800; }
-h2 { font-size: 19px; margin: 0 0 12px; font-weight: 700; }
+h2 { font-size: 18px; margin: 0 0 12px; font-weight: 700; }
 p { margin: 0 0 14px; color: var(--sub); font-size: 15px; }
 
 .card {
@@ -149,6 +152,7 @@ p { margin: 0 0 14px; color: var(--sub); font-size: 15px; }
   font-size: 14px;
 }
 
+/* 체크리스트 항목 */
 label.q {
   display: flex;
   gap: 14px;
@@ -172,6 +176,20 @@ input[type=checkbox] {
 }
 label.q span { font-size: 15px; line-height: 1.5; }
 
+/* 캡처 안내 배너 */
+.capture-notice {
+  background: #fef9c3;
+  color: #713f12;
+  border: 1px solid #fde047;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+/* 결과 점수판 */
 .score-box { text-align: center; padding: 20px 14px; }
 .score {
   font-size: 64px;
@@ -231,14 +249,131 @@ label.q span { font-size: 15px; line-height: 1.5; }
 }
 .perfect-box small { color: var(--pt); display: block; margin-top: 4px; font-weight: 600; }
 
-small.guide-text {
-  color: var(--sub);
-  display: block;
+/* 1등 매장 vs 내 매장 비교표 */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.compare-table th, .compare-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.compare-table th { background: rgba(0,0,0,0.02); font-weight: 700; }
+.compare-table td:first-child { text-align: left; font-weight: 600; }
+.col-top { color: var(--pt); font-weight: 700; }
+.col-mine { color: var(--warn); font-weight: 700; }
+
+/* 매출 누수 계산기 */
+.loss-box {
+  background: var(--warn-bg);
+  border: 1px solid rgba(180, 83, 42, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.calc-slider {
+  width: 55%;
+  accent-color: var(--warn);
+}
+.loss-total {
+  text-align: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(180, 83, 42, 0.3);
+}
+.loss-num {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--warn);
+}
+
+/* Before / After 쇼케이스 */
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.ba-card {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.ba-card strong { display: block; margin-bottom: 6px; }
+.ba-before strong { color: var(--sub); }
+.ba-after { border-color: var(--pt); background: rgba(47, 74, 60, 0.04); }
+.ba-after strong { color: var(--pt); }
+
+/* PDF 증정 배너 */
+.gift-banner {
+  background: var(--blue-bg);
+  border: 1px solid rgba(29, 78, 216, 0.2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
   font-size: 13px;
   line-height: 1.5;
-  margin-top: 14px;
+  color: var(--blue);
 }
-.hide { display: none !important; }
+.gift-banner strong { font-size: 14px; display: block; margin-bottom: 4px; }
+
+/* 토글 헤더 */
+.qs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.btn-toggle-all {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* 실시간 순위 조회기 카드 */
+.rank-search-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.rank-input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font: inherit;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.rank-btn {
+  padding: 0 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--pt);
+  color: var(--pt-ink);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
 #toast {
   position: fixed;
@@ -257,6 +392,7 @@ small.guide-text {
 }
 #toast.show { opacity: 1; }
 .counter { text-align: center; font-size: 14px; color: var(--sub); margin: 8px 0; font-weight: 600; }
+.hide { display: none !important; }
 
 footer {
   max-width: 560px;
@@ -278,18 +414,32 @@ footer {
       <span class="social-proof">📊 전국 <strong>1,200+</strong>개 매장 진단 완료</span>
     </div>
 
-    <h1>내 매장 네이버 플레이스,<br>몇 점일까요?</h1>
-    <p>2분 점검으로 우리 매장 지도 점수와 <strong>지금 당장 바꿔야 할 3가지</strong>를 확인하세요. 로그인 없이 바로 확인 가능합니다.</p>
+    <h1>내 매장 네이버 플레이스,<br>지금 몇 점일까요?</h1>
+    <p>2분 체크로 우리 매장 지도 점수와 <strong>지금 당장 바꿔야 할 핵심 과제 3가지</strong>를 확인하세요. 로그인 없이 즉시 확인 가능합니다.</p>
     
+    <!-- 실시간 순위 조회 입력기 -->
+    <div class="card" style="border: 1px solid var(--pt);">
+      <h2 style="margin-bottom:4px;">🔍 실시간 플레이스 순위 자동 분석</h2>
+      <p style="font-size:13px; margin-bottom:8px;">네이버 지도 매장 링크(naver.me 포함)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
+      <div class="rank-search-box">
+        <input type="text" id="rank-url-input" class="rank-input" placeholder="플레이스 지도 주소 또는 naver.me 링크 입력">
+        <button type="button" id="btn-rank-check" class="rank-btn">순위 분석</button>
+      </div>
+      <div id="rank-loading" class="hide" style="font-size:13px; color:var(--pt); margin-top:10px; font-weight:600;">
+        ⚡ 네이버 모바일 검색 순위를 분석하고 있습니다 (약 2~3초 소요)...
+      </div>
+      <div id="rank-result" class="hide" style="margin-top:12px; padding:12px; border-radius:8px; background:var(--bg); font-size:13px; line-height:1.5;"></div>
+    </div>
+
     <div class="card">
       <h2>진단할 업종을 선택하세요</h2>
       <button class="btn" data-t="food">🍽️ 식당 · 카페 · 디저트</button>
-      <button class="btn" data-t="beauty">💇‍♀️ 뷰티 샵 (미용실·네일·속눈썹·왁싱)</button>
+      <button class="btn" data-t="beauty">💇‍♀️ 뷰티샵 (헤어·네일·속눈썹·왁싱)</button>
       <button class="btn" data-t="furniture">🛋️ 가구 · 쇼룸 · 인테리어</button>
       <button class="btn" data-t="fitness">🧘‍♂️ 운동 · 필라테스 · PT · 학원</button>
-      <button class="btn" data-t="etc">🏪 공방 · 스튜디오 · 반려동물 · 기타</button>
+      <button class="btn" data-t="etc">🏪 공방 · 스튜디오 · 침구 · 반려동물 · 기타</button>
     </div>
-    <small class="guide-text">※ 병·의원 등 의료기관 및 규제 시술 업종은 진단 대상에서 제외됩니다.</small>
+    <small class="guide-text" style="color:var(--sub); display:block; font-size:13px;">※ 병·의원 등 의료기관 및 의료법 규제 업종은 진단 대상에서 제외됩니다.</small>
   </div>
 
   <!-- STEP 2: 자가점검 체크리스트 (20문항) -->
@@ -297,15 +447,25 @@ footer {
     <button class="btn sub-line" id="back" type="button" style="min-height:40px;margin:0 0 10px">← 업종 다시 선택</button>
     <div class="brand-badge" id="b-sub">자가진단 진행 중</div>
     <h1 id="t2">매장 자가진단</h1>
-    <p>스마트폰으로 본인 매장의 <strong>네이버 플레이스(지도)</strong> 화면을 켜두고, 해당되는 항목을 모두 체크하세요.</p>
+    <p>스마트폰으로 본인 매장의 <strong>네이버 플레이스(지도)</strong> 화면을 켜두고, 해당되는 항목을 빠짐없이 체크하세요.</p>
     
-    <div class="card" id="qs"></div>
-    <div class="counter" id="cnt">체크 0 / 20</div>
+    <div class="qs-header">
+      <span style="font-size:13px; font-weight:700; color:var(--sub);">총 20개 점검 항목</span>
+      <button type="button" id="btn-toggle-all" class="btn-toggle-all">전체 선택</button>
+    </div>
+
+    <div class="card" id="qs" style="margin-top:4px;"></div>
+    <div class="counter" id="cnt">점검 완료 0 / 20개</div>
     <button class="btn pri" id="go">내 점수 및 진단 결과 보기 →</button>
   </div>
 
   <!-- STEP 3: 진단 결과 및 리드 전환 동선 -->
   <div id="s3" class="hide">
+    <!-- 캡처 권장 안내 배너 -->
+    <div class="capture-notice">
+      📸 현재 진단 결과를 캡처해 두시면, 1:1 상담 시 훨씬 빠르고 정확한 맞춤 진단이 가능합니다.
+    </div>
+
     <div class="card score-box">
       <p style="margin:0; font-size:14px; font-weight:600;">우리 매장 플레이스 종합 점수</p>
       <div class="score"><span id="sc">0</span><span style="font-size:24px; font-weight:600; color:var(--sub);"> / 100점</span></div>
@@ -313,229 +473,15 @@ footer {
       <div class="witty-comment" id="witty"></div>
     </div>
 
+    <!-- 우선순위 과제 -->
     <div class="card">
       <h2>우선순위 개선 과제 3가지</h2>
-      <p style="font-size:14px;">검색 노출과 예약 전환에 직결되는 가장 시급한 보완 항목입니다.</p>
+      <p style="font-size:14px;">검색 노출 순위와 예약 전환에 직결되는 가장 시급한 보완 항목입니다.</p>
       <div id="todo"></div>
     </div>
 
+    <!-- 1등 매장 vs 내 매장 비교표 -->
     <div class="card">
-      <h2>전문가 1:1 정밀 분석 리포트 신청</h2>
-      <p>매장명과 플레이스 링크를 남겨주시면, 담당 디렉터가 인근 경쟁 매장 비교 분석 후 <strong>1영업일 이내에 [핵심 개선안 5분 유선 브리핑]</strong>을 직접 진행해 드립니다.</p>
-      
-      <!-- 네이버 폼 링크 -->
-      <a class="btn pri" id="form-link" href="https://naver.me/G0pu2btc" target="_blank" rel="noopener">
-        📄 1:1 정밀 진단 & 유선 브리핑 신청하기
-      </a>
-      
-      <!-- 카카오톡 채널 링크 -->
-      <a class="btn kakao" id="kakao-link" href="https://pf.kakao.com/_xhGxhxib/chat" target="_blank" rel="noopener">
-        💬 카카오톡으로 실시간 문의하기
-      </a>
-      
-      <button class="btn sub-line" id="btn-share">🔗 진단기 링크 복사하기</button>
-      
-      <small class="guide-text">
-        ※ 본 결과는 직접 체크하신 데이터를 기반으로 한 참고용 자가진단입니다.
-      </small>
-    </div>
-
-    <button class="btn" id="again">처음부터 다시 진단하기</button>
-  </div>
-</main>
-
-<footer>
-  비에이커뮤니케이션 (BAcommunication)<br>
-  © 2017 BAcommunication. All rights reserved.
-</footer>
-
-<div id="toast"></div>
-
-<script>
-/* =================================================================
-   [연동 링크 설정]
-   * 대표님의 네이버 폼 및 카카오톡 채널 URL을 확인하세요.
-================================================================= */
-var NAVER_FORM_URL = "https://naver.me/G0pu2btc";
-var KAKAO_URL = "https://pf.kakao.com/_xhGxhxib/chat";
-
-var C = [
-  { text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 숫자가 개선의 기준이 됩니다." },
-  { text: "전화 연결(스마트콜) 또는 톡톡이 활성화돼 있다", p: 3, tip: "스마트콜이나 톡톡을 켜 두면 문의 고객 이탈을 막을 수 있습니다." },
-  { text: "대표 사진 및 내부·외부 사진이 합쳐서 20장 이상 등록돼 있다", p: 2, tip: "외관·내부·대표 상품을 골고루 최소 20장 채워 신뢰도를 높이세요." },
-  { text: "소개글에 대표 키워드 및 [지역명 + 핵심 업종]이 자연스럽게 포함돼 있다", p: 2, tip: "첫 문장에 '지역+업종'을 넣고 매장의 핵심 강점과 방문 이유를 적어 보세요." },
-  { text: "방문자 리뷰가 30개 이상 누적돼 있다", p: 2, tip: "방문 후 리뷰를 남길 수 있도록 매장 안내물(영수증 QR 등)을 비치해 보세요." },
-  { text: "최근 한 달 이내에 새로운 방문자 리뷰가 등록되었다", p: 2, tip: "최근 리뷰가 멈춘 매장은 고객이 꺼립니다. 매월 꾸준히 쌓이는 동선이 필요합니다." },
-  { text: "블로그 리뷰 후기가 10개 이상 발행돼 있다", p: 2, tip: "실제 방문 후기가 쌓이면 고객의 신뢰와 방문 전환율이 급상승합니다." },
-  { text: "가격 정보 또는 대표 시그니처 메뉴/상품이 정확히 등록돼 있다", p: 2, tip: "대표 상품과 가격을 사진과 함께 최신 상태로 등록하세요." },
-  { text: "오시는 길 및 주차 가능 여부/대중교통 안내가 상세히 적혀 있다", p: 1, tip: "주차 가능 여부와 가장 가까운 역·출구를 구체적으로 적어 주세요." },
-  { text: "소식·이벤트 탭에 최근 1달 내 새 소식을 1회 이상 업로드했다", p: 1, tip: "소식 탭에 신상품, 혜택, 공지를 올려 활성화된 매장임을 보여주세요." },
-  { text: "고객 방문자 리뷰에 사장님 답글을 정성스럽게 달고 있다", p: 1, tip: "짧아도 사장님의 답글이 달리면 잠재 고객의 방문 결심이 높아집니다." },
-  { text: "최근 3개월 이내에 발행된 신규 블로그 리뷰가 있다", p: 1, tip: "검색 로봇은 최신 콘텐츠를 우대합니다. 최근 신규 후기 확보가 필요합니다." },
-  { text: "최근 6개월 이내에 매장 최신 사진을 추가 등록했다", p: 1, tip: "계절과 신메뉴·신상품이 반영된 최신 사진으로 주기적으로 갱신해 주세요." },
-  { text: "영업시간, 정기 휴무일, 브레이크타임이 빈틈없이 설정돼 있다", p: 1, tip: "휴무일과 브레이크타임까지 정확히 설정해 헛걸음을 방지하세요." },
-  { text: "인스타그램, 블로그, 또는 공식 웹사이트 링크가 연결돼 있다", p: 1, tip: "SNS와 홈페이지를 연결해 매장의 추가 스토리와 브랜드 신뢰를 더하세요." },
-  { text: "대표 사진 1장이 매장의 매력을 한눈에 보여주는 고화질 컷이다", p: 2, tip: "어둡거나 흔들린 사진 대신, 밝고 선명한 대표 컷으로 첫인상을 사로잡으세요." }
-];
-
-var T = {
-  food: {
-    n: "식당·카페·디저트",
-    q: [
-      { text: "대표 메뉴의 고화질 단독 사진이 각각 등록돼 있다", p: 3, tip: "시그니처 메뉴의 먹음직스러운 단독 사진을 필수로 등록하세요." },
-      { text: "상세 메뉴판 이미지와 실시간 가격 정보가 최신화돼 있다", p: 2, tip: "가격 변동이 반영된 최신 메뉴판 전체 이미지를 업로드해 주세요." },
-      { text: "웨이팅·예약·포장·단체석 등 이용 정보가 적혀 있다", p: 1, tip: "포장, 웨이팅 방식, 단체석 예약 가능 여부를 소개글에 명확히 적어주세요." },
-      { text: "매장의 조명, 인테리어, 좌석 분위기 사진이 충분하다", p: 1, tip: "데이트, 모임 등 방문 목적을 결정할 수 있도록 좌석 및 전경 사진을 보강하세요." }
-    ]
-  },
-  beauty: {
-    n: "뷰티 샵",
-    q: [
-      { text: "시술 포트폴리오(전후/완성 사진)가 30장 이상 등록돼 있다", p: 3, tip: "시술 전후 비교 사진과 결과물 포트폴리오를 30장 이상 누적하세요." },
-      { text: "시술 옵션별 투명한 가격표가 플레이스에 공개돼 있다", p: 2, tip: "기본 시술 가격과 기장 추가 등의 기준을 투명하게 안내하세요." },
-      { text: "네이버 실시간 예약이 연동돼 있다", p: 3, tip: "뷰티 샵은 네이버 예약 연동 여부가 매출 전환의 대부분을 결정합니다." },
-      { text: "예약 방법과 취소·노쇼 규정 안내가 있다", p: 1, tip: "100% 예약제 여부, 노쇼 규정, 주차 안내를 사전에 고지하세요." }
-    ]
-  },
-  furniture: {
-    n: "가구·쇼룸·인테리어",
-    q: [
-      { text: "쇼룸 전경 및 실제 공간 연출(쇼룸 인테리어) 사진이 충분하다", p: 3, tip: "실제 집처럼 감각적으로 연출된 쇼룸 스타일링 사진을 보여주세요." },
-      { text: "신혼·입주가구 등 고객 타겟 상황별 맞춤 안내가 적혀 있다", p: 2, tip: "입주 공동구매, 신혼 패키지 등 타겟별 맞춤 혜택을 소개글에 넣으세요." },
-      { text: "쇼룸 방문 상담 예약이 연결돼 있다", p: 2, tip: "1:1 프라이빗 가구 상담 예약을 연동해 방문율을 끌어올리세요." },
-      { text: "대표 가구 제품의 스펙과 치수 정보가 공개돼 있다", p: 1, tip: "가구 실측 사이즈와 친환경 자재 정보를 텍스트로 명시해 두세요." }
-    ]
-  },
-  fitness: {
-    n: "운동·교육 매장",
-    q: [
-      { text: "센터 내부 운동 기구 및 샤워/편의시설 사진이 풍성하다", p: 2, tip: "운동 기구 브랜드와 락커, 샤워실 등 청결한 시설 사진을 부각하세요." },
-      { text: "강사진의 공인 자격증 및 전문 이력이 프로필로 등록돼 있다", p: 3, tip: "회원들이 신뢰하는 강사들의 실명, 자격증, 경력을 등록하세요." },
-      { text: "체험 수업 신청 링크가 켜져 있다", p: 3, tip: "1회 체험권 또는 무료 상담 예약 링크를 열어두면 신규 유입이 늘어납니다." },
-      { text: "수업 커리큘럼별 명확한 프로그램 안내가 적혀 있다", p: 1, tip: "초보자 코스, 체형 교정 등 목적별 맞춤 프로그램 내용을 쉽게 적어주세요." }
-    ]
-  },
-  etc: {
-    n: "공방·스튜디오·기타 매장",
-    q: [
-      { text: "완성작 및 서비스 결과물 포트폴리오 사진이 등록돼 있다", p: 3, tip: "실제 고객들의 완성 작품이나 원데이 클래스 수업 현장 사진을 올리세요." },
-      { text: "클래스/서비스별 세부 커리큘럼과 금액이 명시돼 있다", p: 2, tip: "소요 시간, 준비물, 금액이 포함된 커리큘럼을 투명하게 공개하세요." },
-      { text: "예약 신청 및 1:1 톡톡/전화 상담 동선이 구축돼 있다", p: 2, tip: "네이버 톡톡 상담과 예약 시스템을 상시 열어두세요." },
-      { text: "우리 매장만의 차별화된 스토리 및 방문 이유가 소개돼 있다", p: 1, tip: "우리 공방·매장만의 철학과 특별한 경험을 소개글에 담아보세요." }
-    ]
-  }
-};
-
-var currentTypeKey = "food";
-var currentQuestions = [];
-
-function $(id) { return document.getElementById(id); }
-
-function showStep(stepNum) {
-  ["s1", "s2", "s3"].forEach(function(k) {
-    $(k).classList.toggle("hide", k !== "s" + stepNum);
-  });
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function hasType(k) { return Object.prototype.hasOwnProperty.call(T, k); }
-
-function toast(m) {
-  var e = $("toast");
-  e.textContent = m;
-  e.classList.add("show");
-  setTimeout(function() { e.classList.remove("show"); }, 2000);
-}
-
-function copyText(t, msg) {
-  var fb = function() { window.prompt("아래 내용을 복사하세요", t); };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(t).then(function() { toast(msg); }).catch(fb);
-  } else {
-    fb();
-  }
-}
-
-function getWittyComment(s) {
-  if (s <= 10) return "🚨 네이버 지도에서 매장이 미아 상태예요… 오늘 당장 3가지만 손봐도 달라집니다!";
-  if (s <= 25) return "🚪 간판만 걸고 셔터는 내려두신 상태예요. 손님들이 영업 안 하는 줄 알고 그냥 지나쳐요.";
-  if (s <= 40) return "🍃 옆 매장은 예약 폭주 중인데, 우리 매장엔 찬바람이 부네요… 지금 손볼 곳이 많습니다.";
-  if (s <= 55) return "👔 옷은 멀끔히 입었는데 넥타이를 깜빡한 느낌! 빠진 핵심 몇 가지만 채워도 노출 순위가 확 달라집니다.";
-  if (s <= 70) return "🏃 동네 골목 대장은 가능한 점수! 이제 대로변 1등 매장 잡으러 갈 타이밍입니다.";
-  if (s <= 85) return "👏 플레이스 맛집 인정! 조금만 다듬으면 검색 1페이지 상위 랭킹 방어도 문제없어요.";
-  if (s < 100) return "🎖️ 거의 네이버 플레이스 공무원 수준! 이제 바이럴 후기만 얹으면 대박 납니다.";
-  return "👑 기본 설정 100점 만점! 완벽합니다. 이제 본격적인 고객 유입 마케팅만 남았습니다.";
-}
-
-function updateCount() {
-  $("cnt").textContent = "체크 " + document.querySelectorAll("#qs input:checked").length + " / 20";
-}
-
-function startDiagnostic(k) {
-  currentTypeKey = hasType(k) ? k : "etc";
-  var d = T[currentTypeKey];
-  currentQuestions = C.concat(d.q);
-  
-  $("t2").textContent = d.n + " 플레이스 자가진단";
-  $("b-sub").textContent = d.n + " • 총 20개 문항 체크";
-  
-  $("qs").innerHTML = currentQuestions.map(function(item, i) {
-    return '<label class="q"><input type="checkbox" data-index="' + i + '"><span>'+item.text+'</span></label>';
-  }).join("");
-  
-  updateCount();
-  showStep(2);
-}
-
-document.querySelectorAll("[data-t]").forEach(function(b) {
-  b.onclick = function() { startDiagnostic(b.dataset.t); };
-});
-
-$("qs").addEventListener("change", updateCount);
-$("back").onclick = function() { showStep(1); };
-
-$("go").onclick = function() {
-  var inputs = document.querySelectorAll("#qs input");
-  var score = 0;
-  var miss = [];
-  
-  inputs.forEach(function(el, i) {
-    if (el.checked) {
-      score += 5;
-    } else {
-      miss.push(currentQuestions[i]);
-    }
-  });
-
-  $("sc").textContent = score;
-  $("bar").style.width = score + "%";
-  $("witty").textContent = getWittyComment(score);
-
-  miss.sort(function(a, b) { return b.p - a.p; });
-
-  var box = $("todo");
-  if (!miss.length) {
-    box.innerHTML = '<div class="perfect-box"><strong>플레이스 기본 설정이 모두 갖춰져 있어요!</strong><br><small>→ 이제 상위권 유지를 위한 정기적인 후기 관리와 방문객 유입 마케팅을 진행할 차례입니다.</small></div>';
-  } else {
-    box.innerHTML = miss.slice(0, 3).map(function(m) {
-      return '<div class="todo"><strong>' + m.text + '</strong><small>→ ' + m.tip + '</small></div>';
-    }).join("");
-  }
-
-  $("form-link").href = NAVER_FORM_URL;
-  $("kakao-link").href = KAKAO_URL;
-  showStep(3);
-};
-
-$("again").onclick = function() { showStep(1); };
-$("btn-share").onclick = function() {
-  var shareUrl = window.location.href.split('?')[0] + "?type=" + currentTypeKey;
-  copyText(shareUrl, "진단기 링크가 복사되었습니다!");
-};
-
-var ut = new URLSearchParams(location.search).get("type");
-if (ut && hasType(ut)) { startDiagnostic(ut); }
-</script>
-
-</body>
-</html>
+      <h2>🏆 동네 상위 1~3위 매장 vs 내 매장 비교</h2>
+      <p style="font-size:13px;">우리 동네 1~3위 매장이 손님을 독점하는 핵심 차이입니다.</p>
+      <table class="compare-
