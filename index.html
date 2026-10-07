@@ -424,7 +424,7 @@ footer {
       <input type="text" id="rank-kw-input" class="rank-input" style="width:100%; margin-top:8px;" placeholder="검색 키워드 (선택) 예: 울산 남구 카페 — 비우면 자동 추정">
       
       <div id="rank-loading" class="hide" style="font-size:13px; color:var(--pt); margin-top:10px; font-weight:600;">
-        ⚡ 네이버 지도 실시간 검색 순위를 스캔하고 있습니다 (약 2초 소요)...
+        ⚡ 네이버 지도 실시간 검색 순위를 스캔하고 있습니다...
       </div>
       
       <!-- 동적 결과 카드 -->
@@ -433,9 +433,9 @@ footer {
         <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
         
         <!-- 숫자 롤링 전광판 -->
-        <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px;">
-          <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;">현재 검색 노출 순위</span>
-          <div style="font-size:36px; font-weight:900; color:var(--pt); line-height:1.2;" id="res-rolling-rank">분석 중...</div>
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
+          <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
+          <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
         </div>
         
         <!-- 맞춤 상태 코멘트 -->
@@ -841,41 +841,61 @@ $("btn-share").onclick = function() {
 };
 
 // -------------------------------------------------------------
-// [실시간 순위 분석 슬롯머신 감속 롤링 애니메이션]
+// [실시간 순위 분석 정밀 3.8초 슬롯머신 감속 롤링 애니메이션]
 // -------------------------------------------------------------
 
 function runRankRolling(targetRankNum, callback) {
   var el = $("res-rolling-rank");
-  var duration = 2200; // 정확히 2.2초 동안 롤링 진행
+  var statusEl = $("res-scan-status");
+  var totalDuration = 3800; // 약 3.8초 긴장감 지속
   var startTime = Date.now();
-  
-  var timer = setInterval(function() {
+
+  function tick() {
     var elapsed = Date.now() - startTime;
-    
-    if (elapsed < 1500) {
-      // 1. 초기 1.5초: 전국 1~99위 사이 숫자가 눈 돌아가게 무작위 롤링
-      var randomNum = Math.floor(Math.random() * 95) + 1;
-      el.textContent = randomNum + "위";
-    } else if (elapsed < duration) {
-      // 2. 1.5~2.2초 구간: 목표 순위 근처에서 덜컹거리며 서서히 감속
-      if (targetRankNum) {
-        var offset = Math.floor(Math.random() * 4);
-        var nearNum = Math.max(1, targetRankNum + (Math.random() > 0.5 ? offset : -offset));
-        el.textContent = nearNum + "위";
-      } else {
-        el.textContent = "90위권...";
-      }
-    } else {
-      // 3. 2.2초 도달: 최종 목표 순위로 고정 정지
-      clearInterval(timer);
+    var progress = elapsed / totalDuration; // 0.0 ~ 1.0
+
+    if (progress >= 1) {
+      // 최종 종료 시점
+      statusEl.textContent = "네이버 지도 검색 노출 순위 확정";
       if (targetRankNum) {
         el.textContent = targetRankNum + "위";
       } else {
         el.textContent = "100위 밖";
       }
       if (callback) callback();
+      return;
     }
-  }, 50); // 50ms 단위 고속 갱신
+
+    var nextDelay = 60;
+
+    if (progress < 0.5) {
+      // 1단계 (0 ~ 1.9초): 전국 데이터 광속 스캔
+      statusEl.textContent = "네이버 모바일 검색 데이터 전수 스캔 중...";
+      var rand = Math.floor(Math.random() * 95) + 1;
+      el.textContent = rand + "위";
+      nextDelay = 65;
+    } else if (progress < 0.75) {
+      // 2단계 (1.9 ~ 2.85초): 매장 순위 근처로 좁혀지며 감속
+      statusEl.textContent = "타겟 키워드 랭킹 정밀 대조 중...";
+      var base = targetRankNum || 80;
+      var offset = Math.floor(Math.random() * 7) + 1;
+      var near = Math.max(1, base + (Math.random() > 0.5 ? offset : -offset));
+      el.textContent = near + "위";
+      nextDelay = 120 + Math.floor((progress - 0.5) * 450); // 점점 묵직해짐
+    } else {
+      // 3단계 (2.85 ~ 3.8초): 목표 순위 바로 앞에서 숨 막히는 덜컹거림
+      statusEl.textContent = "최종 노출 순위 산출 중...";
+      var finalBase = targetRankNum || 98;
+      var diff = Math.random() > 0.5 ? 1 : 2;
+      var suspenseNum = Math.max(1, finalBase + (Math.random() > 0.5 ? diff : -diff));
+      el.textContent = suspenseNum + "위";
+      nextDelay = 280 + Math.floor((progress - 0.75) * 600); // 틱... 틱... 덜컹거림
+    }
+
+    setTimeout(tick, nextDelay);
+  }
+
+  tick();
 }
 
 // 순위별 1줄 팩트 코멘트 반환
@@ -935,9 +955,9 @@ $("btn-rank-check").onclick = function() {
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
       
-      // 2.2초 슬롯머신 롤링 시작
+      // 3.8초 슬롯머신 감속 롤링 시작
       runRankRolling(data.rankNum, function() {
-        // 숫자가 멈추면 그 순간 코멘트와 진단 유도 버튼 등장
+        // 숫자가 완전히 멈추면 코멘트와 2분 점검 버튼이 튀어나옴
         var insight = getRankInsight(data.rankNum);
         var commentEl = $("res-comment-box");
         commentEl.style.background = insight.bg;
