@@ -6,6 +6,7 @@
 <title>내 매장 네이버 플레이스 자가진단 | 비에이커뮤니케이션</title>
 <meta name="description" content="2분 체크로 내 매장 플레이스 점수와 우선순위 개선 과제 3가지를 확인하세요.">
 <script defer src="/_vercel/insights/script.js"></script>
+
 <!-- SNS / 카카오톡 공유 최적화 메타태그 (Open Graph) -->
 <meta property="og:title" content="내 매장 네이버 플레이스 자가진단 | 비에이커뮤니케이션">
 <meta property="og:description" content="우리 매장 지도 점수와 당장 바꿔야 할 3가지 (2분 무료 점검)">
@@ -412,21 +413,43 @@ footer {
     <p>2분 체크로 우리 매장 지도 점수와 <strong>지금 당장 바꿔야 할 핵심 과제 3가지</strong>를 확인하세요. 로그인 없이 즉시 확인 가능합니다.</p>
     
     <!-- 실시간 순위 조회 입력기 -->
-    <div class="card" style="border: 1px solid var(--pt);">
+    <div class="card" style="border: 1.5px solid var(--pt);">
       <h2 style="margin-bottom:4px;">🔍 실시간 플레이스 순위 자동 분석</h2>
       <p style="font-size:13px; margin-bottom:8px;">네이버 지도 매장 링크(naver.me 포함)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
+      
       <div class="rank-search-box">
         <input type="text" id="rank-url-input" class="rank-input" placeholder="플레이스 지도 주소 또는 naver.me 링크 입력">
         <button type="button" id="btn-rank-check" class="rank-btn">순위 분석</button>
       </div>
       <input type="text" id="rank-kw-input" class="rank-input" style="width:100%; margin-top:8px;" placeholder="검색 키워드 (선택) 예: 울산 남구 카페 — 비우면 자동 추정">
+      
       <div id="rank-loading" class="hide" style="font-size:13px; color:var(--pt); margin-top:10px; font-weight:600;">
-        ⚡ 네이버 모바일 검색 순위를 분석하고 있습니다 (약 2~3초 소요)...
+        ⚡ 네이버 모바일 실시간 검색 순위를 정밀 분석하고 있습니다...
       </div>
-      <div id="rank-result" class="hide" style="margin-top:12px; padding:12px; border-radius:8px; background:var(--bg); font-size:13px; line-height:1.5;"></div>
+      
+      <!-- 동적 결과 카드 (숫자 롤링 + 상태 코멘트 + 2분 진단 유도 버튼) -->
+      <div id="rank-result" class="hide" style="margin-top:14px; padding:16px; border-radius:12px; background:var(--bg); border:1px solid var(--line); text-align:center;">
+        <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
+        <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
+        
+        <!-- 숫자 롤링 전광판 -->
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px;">
+          <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;">현재 검색 노출 순위</span>
+          <div style="font-size:36px; font-weight:900; color:var(--pt); line-height:1.2;" id="res-rolling-rank">0위</div>
+        </div>
+        
+        <!-- 맞춤 상태 코멘트 -->
+        <div id="res-comment-box" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
+        
+        <!-- 자가진단 유도 CTA 버튼 -->
+        <button type="button" id="btn-to-diagnostic" class="btn pri" style="min-height:46px; font-size:14px; margin:0;">
+          👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
+        </button>
+      </div>
     </div>
 
-    <div class="card">
+    <!-- 업종 선택 카드 -->
+    <div class="card" id="industry-card">
       <h2>진단할 업종을 선택하세요</h2>
       <button class="btn" data-t="food">🍽️ 식당 · 카페 · 디저트</button>
       <button class="btn" data-t="beauty">💇‍♀️ 뷰티샵 (헤어·네일·속눈썹·왁싱)</button>
@@ -817,6 +840,57 @@ $("btn-share").onclick = function() {
   copyText(shareUrl, "진단기 링크가 복사되었습니다!");
 };
 
+// -------------------------------------------------------------
+// [실시간 순위 분석 애니메이션 및 인사이트 연출]
+// -------------------------------------------------------------
+
+// 숫자 롤링 애니메이션 함수
+function runRankRolling(targetNum, callback) {
+  var el = $("res-rolling-rank");
+  var current = 1;
+  var speed = 25;
+  var timer = setInterval(function() {
+    current += Math.ceil((targetNum - current) / 6) || 1;
+    if (current >= targetNum) {
+      current = targetNum;
+      clearInterval(timer);
+      el.textContent = current + "위";
+      if (callback) callback();
+    } else {
+      el.textContent = current + "위";
+    }
+  }, speed);
+}
+
+// 순위별 1줄 팩트 코멘트 반환
+function getRankInsight(rankNum) {
+  if (!rankNum || rankNum > 30) {
+    return {
+      bg: "var(--warn-bg)",
+      color: "var(--warn)",
+      text: "🚨 [순위 미노출] 신규 손님 유입이 완전히 차단된 상태입니다. 당장 기본 세팅 3가지만 채워도 노출이 시작됩니다."
+    };
+  } else if (rankNum > 10) {
+    return {
+      bg: "var(--warn-bg)",
+      color: "var(--warn)",
+      text: "⚠️ [2~3페이지 정체] 검색은 되지만 손님들이 1페이지 매장에 다 뺏기고 있습니다. 1페이지 진입을 위한 보완이 시급합니다."
+    };
+  } else if (rankNum > 3) {
+    return {
+      bg: "var(--blue-bg)",
+      color: "var(--blue)",
+      text: "⚡ [1페이지 진입권] 조금만 더 다듬으면 상위 1~3위 독점권 진입이 가능합니다! 빠진 2가지 설정을 점검해 보세요."
+    };
+  } else {
+    return {
+      bg: "rgba(47, 74, 60, 0.08)",
+      color: "var(--pt)",
+      text: "👑 [1페이지 최상위권] 상위권에 안착해 있습니다! 단, 정기적인 리뷰와 최신성 관리가 멈추면 언제든 밀려납니다."
+    };
+  }
+}
+
 // 실시간 순위 조회 버튼 이벤트
 $("btn-rank-check").onclick = function() {
   var inputVal = $("rank-url-input").value.trim();
@@ -837,20 +911,42 @@ $("btn-rank-check").onclick = function() {
       
       if (data.error) {
         resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
-      } else {
-        var rankTxt = data.rankNum ? data.rankNum + "위" : data.rank;
-        resBox.innerHTML =
-          "<strong>매장명:</strong> " + data.name + "<br>" +
-          "<strong>검색 키워드:</strong> [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub);'>(자동 추정 · 위 칸에 직접 입력하면 정확해요)</small>" : "") + "<br>" +
-          "<strong>현재 검색 순위:</strong> <span style='color:var(--pt); font-weight:800; font-size:15px;'>" + rankTxt + "</span><br>" +
-          "<small style='color:var(--sub);'>매장 위치 기준 · 광고 제외 · 10분 캐시</small>";
+        return;
       }
+
+      $("res-store-name").textContent = "분석 매장: " + data.name;
+      $("res-keyword").innerHTML = "기준 키워드: [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
+      
+      var targetRank = data.rankNum || 100;
+      $("res-rolling-rank").textContent = "1위";
+      
+      // 롤링 애니메이션 시작
+      runRankRolling(targetRank, function() {
+        if (!data.rankNum) {
+          $("res-rolling-rank").textContent = "100위 밖";
+        }
+        
+        // 롤링 종료 후 상태 코멘트 출력
+        var insight = getRankInsight(data.rankNum);
+        var commentEl = $("res-comment-box");
+        commentEl.style.background = insight.bg;
+        commentEl.style.color = insight.color;
+        commentEl.textContent = insight.text;
+      });
+      
+      // '원인 찾기' 버튼 클릭 시 업종 선택 카드로 부드럽게 스크롤
+      $("btn-to-diagnostic").onclick = function() {
+        var targetSection = $("industry-card");
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      };
     })
     .catch(function(err) {
       $("rank-loading").classList.add("hide");
       var resBox = $("rank-result");
       resBox.classList.remove("hide");
-      resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위를 불러오지 못했어요.</span><br><small style='color:var(--sub);'>잠시 후 다시 시도하거나 아래 2분 체크리스트를 먼저 진행해 보세요.</small>";
+      resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위를 불러오지 못했어요.</span><br><small style='color:var(--sub);'>잠시 후 다시 시도하거나 아래 자가진단을 먼저 진행해 보세요.</small>";
     });
 };
 
