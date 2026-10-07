@@ -419,6 +419,7 @@ footer {
         <input type="text" id="rank-url-input" class="rank-input" placeholder="플레이스 지도 주소 또는 naver.me 링크 입력">
         <button type="button" id="btn-rank-check" class="rank-btn">순위 분석</button>
       </div>
+      <input type="text" id="rank-kw-input" class="rank-input" style="width:100%; margin-top:8px;" placeholder="검색 키워드 (선택) 예: 울산 남구 카페 — 비우면 자동 추정">
       <div id="rank-loading" class="hide" style="font-size:13px; color:var(--pt); margin-top:10px; font-weight:600;">
         ⚡ 네이버 모바일 검색 순위를 분석하고 있습니다 (약 2~3초 소요)...
       </div>
@@ -827,7 +828,7 @@ $("btn-rank-check").onclick = function() {
   $("rank-loading").classList.remove("hide");
   $("rank-result").classList.add("hide");
 
-  fetch("/api/rank?placeUrl=" + encodeURIComponent(inputVal))
+  fetch("/api/rank?placeUrl=" + encodeURIComponent(inputVal) + "&keyword=" + encodeURIComponent($("rank-kw-input").value.trim()))
     .then(function(res) { return res.json(); })
     .then(function(data) {
       $("rank-loading").classList.add("hide");
@@ -837,18 +838,19 @@ $("btn-rank-check").onclick = function() {
       if (data.error) {
         resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
       } else {
-        resBox.innerHTML = 
+        var rankTxt = data.rankNum ? data.rankNum + "위" : data.rank;
+        resBox.innerHTML =
           "<strong>매장명:</strong> " + data.name + "<br>" +
-          "<strong>분석 키워드:</strong> [" + data.keyword + "]<br>" +
-          "<strong>현재 검색 순위:</strong> <span style='color:var(--pt); font-weight:800; font-size:15px;'>" + data.rank + "</span><br>" +
-          "<strong>세팅 지수:</strong> " + data.score + "점 / 100점";
+          "<strong>검색 키워드:</strong> [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub);'>(자동 추정 · 위 칸에 직접 입력하면 정확해요)</small>" : "") + "<br>" +
+          "<strong>현재 검색 순위:</strong> <span style='color:var(--pt); font-weight:800; font-size:15px;'>" + rankTxt + "</span><br>" +
+          "<small style='color:var(--sub);'>매장 위치 기준 · 광고 제외 · 10분 캐시</small>";
       }
     })
     .catch(function(err) {
       $("rank-loading").classList.add("hide");
       var resBox = $("rank-result");
       resBox.classList.remove("hide");
-      resBox.innerHTML = "<span style='color:var(--pt); font-weight:700;'>✅ 매장 링크가 확인되었습니다.</span><br><small style='color:var(--sub);'>정확한 진단을 위해 아래 업종을 선택하고 2분 체크리스트를 진행해 보세요!</small>";
+      resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위를 불러오지 못했어요.</span><br><small style='color:var(--sub);'>잠시 후 다시 시도하거나 아래 2분 체크리스트를 먼저 진행해 보세요.</small>";
     });
 };
 
