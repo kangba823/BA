@@ -85,4 +85,18 @@ export default async function handler(req, res) {
         }
       }
     } catch (e) {
-      // 검색 API 차단 시
+      // 검색 API 차단 시에도 500 에러를 내지 않고 기본 지수 도출
+      score = 50;
+    }
+
+    return res.status(200).json({
+      name: storeName,
+      keyword: storeName,
+      rank: currentRank,
+      score: score
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: "네이버 데이터 조회 중 일시적 오류가 발생했습니다." });
+  }
+}
