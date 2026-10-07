@@ -484,4 +484,381 @@ footer {
     <div class="card">
       <h2>🏆 동네 상위 1~3위 매장 vs 내 매장 비교</h2>
       <p style="font-size:13px;">우리 동네 1~3위 매장이 손님을 독점하는 핵심 차이입니다.</p>
-      <table class="compare-
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>점검 지표</th>
+            <th class="col-top">동네 상위 1~3위 매장</th>
+            <th class="col-mine">내 매장</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>고화질 사진 수</td>
+            <td class="col-top">평균 40장 이상</td>
+            <td class="col-mine">부족 또는 노후</td>
+          </tr>
+          <tr>
+            <td>지역 키워드 태그</td>
+            <td class="col-top">5개 최적 세팅</td>
+            <td class="col-mine">누락 또는 미비</td>
+          </tr>
+          <tr>
+            <td>네이버 예약 / 스마트콜</td>
+            <td class="col-top">100% 활성화</td>
+            <td class="col-mine">미연동 또는 방치</td>
+          </tr>
+          <tr>
+            <td>최근 1개월 리뷰 유입</td>
+            <td class="col-top">월 15건 이상 지속</td>
+            <td class="col-mine">신규 등록 정체</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 월 예상 매출 누수 계산기 -->
+    <div class="card">
+      <h2>📉 월 예상 고객·매출 누수 계산기</h2>
+      <p style="font-size:13px;">플레이스 세팅 미흡으로 인근 상위 경쟁 매장에 빼앗기고 있는 월간 예상 손실액입니다.</p>
+      <div class="loss-box">
+        <div class="calc-row">
+          <span>매장 1회 평균 객단가</span>
+          <strong id="unit-val">10만 원</strong>
+        </div>
+        <input type="range" id="unit-slider" class="calc-slider" min="2" max="50" step="1" value="10" style="width:100%;">
+        
+        <div class="calc-row" style="margin-top:16px;">
+          <span>놓치고 있는 추정 잠재 고객</span>
+          <strong id="lost-customers-val">약 25명 / 월</strong>
+        </div>
+        
+        <div class="loss-total">
+          <span style="font-size:13px; color:var(--warn); font-weight:700;">월간 예상 누수 매출액</span>
+          <div class="loss-num" id="total-loss-val">약 250만 원</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 세팅 Before & After 쇼케이스 -->
+    <div class="card">
+      <h2>✨ 세팅 작업 전후 (Before & After)</h2>
+      <div class="ba-grid">
+        <div class="ba-card ba-before">
+          <strong>❌ Before (방치 상태)</strong>
+          • 사진 4~5장 등록에 그침<br>
+          • 소개글 내 검색 키워드 부재<br>
+          • 통화 외 예약·문의 수단 부재<br>
+          • 지역 검색 10위권 밖 노출
+        </div>
+        <div class="ba-card ba-after">
+          <strong>✅ After (정밀 세팅)</strong>
+          • 고화질 공간 연출 컷 20장 이상<br>
+          • [지역+업종] 최적화 소개글 장착<br>
+          • 네이버 톡톡·예약 쿠폰 연동<br>
+          • 지도 1페이지 상위 안착
+        </div>
+      </div>
+    </div>
+
+    <!-- 리드 전환 카드 -->
+    <div class="card">
+      <h2>전문가 1:1 정밀 분석 리포트 신청</h2>
+      
+      <!-- PDF 증정 배너 -->
+      <div class="gift-banner">
+        <strong>🎁 신청자 전원 특별 혜택</strong>
+        [2026 네이버 플레이스 상위노출 7가지 비밀 공식 (PDF 요약본)]을 무료로 함께 전달해 드립니다.
+      </div>
+
+      <p>매장명과 플레이스 링크를 남겨주시면, 인근 경쟁 매장 분석 및 노출 개선 키워드가 담긴 분석 리포트 요약본을 <strong>카카오톡 또는 문자로 먼저 발송</strong>해 드립니다.</p>
+      
+      <!-- 네이버 폼 링크 -->
+      <a class="btn pri" id="form-link" href="https://naver.me/G0pu2btc" target="_blank" rel="noopener">
+        📄 1:1 무료 정밀 진단서 신청하기
+      </a>
+      
+      <!-- 카카오톡 채널 링크 -->
+      <a class="btn kakao" id="kakao-link" href="https://pf.kakao.com/_xhGxhxib/chat" target="_blank" rel="noopener">
+        💬 카카오톡으로 실시간 빠른 문의
+      </a>
+      
+      <button class="btn sub-line" id="btn-share">🔗 진단기 링크 복사하기</button>
+      
+      <small class="guide-text" style="color:var(--sub); display:block; font-size:13px; margin-top:14px;">
+        ※ 본 결과는 직접 체크하신 데이터를 기반으로 한 참고용 자가진단 결과입니다.
+      </small>
+    </div>
+
+    <button class="btn" id="again">처음부터 다시 진단하기</button>
+  </div>
+</main>
+
+<footer>
+  비에이커뮤니케이션 (BAcommunication)<br>
+  © 2017 BAcommunication. All rights reserved.
+</footer>
+
+<div id="toast"></div>
+
+<script>
+var NAVER_FORM_URL = "https://naver.me/G0pu2btc";
+var KAKAO_URL = "https://pf.kakao.com/_xhGxhxib/chat";
+
+var C = [
+  { text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 수치가 개선의 명확한 기준이 됩니다." },
+  { text: "전화 연결(스마트콜) 또는 톡톡이 활성화되어 있다", p: 3, tip: "스마트콜이나 톡톡을 켜 두면 문의 고객의 이탈을 즉각 방지할 수 있습니다." },
+  { text: "대표 사진 및 내부·외부 사진이 합쳐서 20장 이상 등록되어 있다", p: 2, tip: "외관·내부·대표 상품을 골고루 최소 20장 이상 채워 고객 신뢰도를 높이세요." },
+  { text: "소개글에 대표 키워드 및 [지역명 + 핵심 업종]이 자연스럽게 포함되어 있다", p: 2, tip: "첫 문장에 '지역+업종'을 넣고 매장의 핵심 강점과 방문 이유를 간결하게 적어 보세요." },
+  { text: "방문자 리뷰가 30개 이상 누적되어 있다", p: 2, tip: "방문 후 리뷰를 남길 수 있도록 매장 내 안내물(영수증 QR 등)을 적극 비치해 보세요." },
+  { text: "최근 한 달 이내에 새로운 방문자 리뷰가 등록되었다", p: 2, tip: "최근 리뷰가 멈춘 매장은 고객이 방문을 주저합니다. 매월 꾸준히 쌓이는 동선이 필수적입니다." },
+  { text: "블로그 리뷰 후기가 10개 이상 발행되어 있다", p: 2, tip: "실제 방문 후기가 축적되면 매장 신뢰도와 방문 전환율이 함께 상승합니다." },
+  { text: "가격 정보 또는 대표 시그니처 메뉴/상품이 정확히 등록되어 있다", p: 2, tip: "대표 상품과 가격을 선명한 사진과 함께 최신 상태로 등록해 투명성을 확보하세요." },
+  { text: "오시는 길 및 주차 가능 여부/대중교통 안내가 상세히 적혀 있다", p: 1, tip: "주차 가능 대수와 가장 가까운 지하철역·출구를 구체적으로 기재해 주세요." },
+  { text: "소식·이벤트 탭에 최근 1달 내 새 소식을 1회 이상 업로드했다", p: 1, tip: "소식 탭에 신상품, 혜택, 영업 일정을 올려 활발히 운영 중인 매장임을 어필하세요." },
+  { text: "고객 방문자 리뷰에 사장님 답글을 정성스럽게 달고 있다", p: 1, tip: "짧더라도 정성 어린 사장님 답글은 잠재 고객의 방문 결정을 크게 높입니다." },
+  { text: "최근 3개월 이내에 발행된 신규 블로그 리뷰가 있다", p: 1, tip: "네이버 검색 로봇은 최신성 문서를 우대합니다. 최근 3개월 내 신규 후기 확보가 필요합니다." },
+  { text: "최근 6개월 이내에 매장 최신 사진을 추가 등록했다", p: 1, tip: "계절과 신메뉴·신상품이 반영된 최신 사진으로 주기적으로 교체해 주세요." },
+  { text: "영업시간, 정기 휴무일, 브레이크타임이 빈틈없이 설정되어 있다", p: 1, tip: "휴무일과 브레이크타임까지 정확히 설정해 고객의 헛걸음과 부정적 평가를 방지하세요." },
+  { text: "인스타그램, 블로그, 또는 공식 웹사이트 링크가 연결되어 있다", p: 1, tip: "SNS와 웹사이트를 연결해 매장의 고유한 스토리와 브랜드 신뢰도를 강화하세요." },
+  { text: "대표 사진 1장이 매장의 매력을 한눈에 보여주는 고화질 컷이다", p: 2, tip: "어둡거나 흔들린 사진 대신, 채광이 좋고 선명한 대표 컷으로 첫인상을 사로잡으세요." }
+];
+
+var T = {
+  food: {
+    n: "식당·카페·디저트",
+    q: [
+      { text: "대표 메뉴의 고화질 단독 사진이 각각 등록되어 있다", p: 3, tip: "시그니처 메뉴의 먹음직스러운 단독 사진을 고화질로 등록하세요." },
+      { text: "상세 메뉴판 이미지와 실시간 가격 정보가 최신화되어 있다", p: 2, tip: "가격 변동 사항이 정확히 반영된 최신 메뉴판 전체 이미지를 업로드해 주세요." },
+      { text: "웨이팅·예약·포장·단체석 등 이용 정보가 명시되어 있다", p: 1, tip: "포장, 웨이팅 방식, 단체석 예약 가능 여부를 소개글에 명확히 기재해 주세요." },
+      { text: "매장의 조명, 인테리어, 좌석 분위기 사진이 충분하다", p: 1, tip: "모임이나 데이트 등 방문 목적에 맞게 선택할 수 있도록 좌석 및 전경 사진을 보강하세요." }
+    ]
+  },
+  beauty: {
+    n: "뷰티샵",
+    q: [
+      { text: "시술 포트폴리오(전후/완성 사진)가 30장 이상 등록되어 있다", p: 3, tip: "시술 전후 비교 컷과 디테일한 포트폴리오를 30장 이상 꾸준히 누적하세요." },
+      { text: "시술 옵션별 투명한 가격표가 플레이스에 공개되어 있다", p: 2, tip: "기본 시술 가격과 기장 추가 등 옵션 기준을 투명하게 안내해 심리적 장벽을 낮추세요." },
+      { text: "네이버 실시간 예약이 연동되어 있다", p: 3, tip: "뷰티샵은 네이버 실시간 예약 연동 여부가 매출 전환의 대부분을 결정합니다." },
+      { text: "예약 방법과 취소·노쇼 규정 안내가 명시되어 있다", p: 1, tip: "100% 예약제 여부, 노쇼 규정, 주차 안내를 사전에 명확히 고지하세요." }
+    ]
+  },
+  furniture: {
+    n: "가구·쇼룸·인테리어",
+    q: [
+      { text: "쇼룸 전경 및 실제 공간 연출(쇼룸 인테리어) 사진이 충분하다", p: 3, tip: "단품 가구 사진보다 실제 공간에 감각적으로 연출된 쇼룸 스타일링 컷을 보여주세요." },
+      { text: "신혼·입주가구 등 고객 타겟 상황별 맞춤 안내가 적혀 있다", p: 2, tip: "입주 아파트 공동구매, 신혼 패키지 등 상황별 맞춤 혜택을 소개글에 담아내세요." },
+      { text: "쇼룸 방문 상담 예약이 연결되어 있다", p: 2, tip: "1:1 프라이빗 가구 상담 예약을 연동해 방문율과 계약 성사율을 끌어올리세요." },
+      { text: "대표 가구 제품의 스펙과 치수 정보가 공개되어 있다", p: 1, tip: "가구 실측 사이즈와 친환경 자재 정보를 텍스트로 명시해 두세요." }
+    ]
+  },
+  fitness: {
+    n: "운동·교육 매장",
+    q: [
+      { text: "센터 내부 운동 기구 및 샤워/편의시설 사진이 풍성하다", p: 2, tip: "운동 기구 브랜드와 락커, 샤워실 등 청결하고 쾌적한 시설 사진을 부각하세요." },
+      { text: "강사진의 공인 자격증 및 전문 이력이 프로필로 등록되어 있다", p: 3, tip: "회원들이 신뢰할 수 있도록 강사들의 실명, 자격증, 지도 경력을 등록하세요." },
+      { text: "체험 수업 신청 링크가 활성화되어 있다", p: 3, tip: "1회 체험권 또는 무료 상담 예약 링크를 열어두면 신규 유입이 크게 증가합니다." },
+      { text: "수업 커리큘럼별 명확한 프로그램 안내가 적혀 있다", p: 1, tip: "초보자 코스, 체형 교정 등 목적별 맞춤 프로그램 내용을 알기 쉽게 기재해 주세요." }
+    ]
+  },
+  etc: {
+    n: "공방·스튜디오·침구·기타 매장",
+    q: [
+      { text: "완성작 및 서비스 결과물 포트폴리오 사진이 등록되어 있다", p: 3, tip: "고객 완성 작품이나 클래스 수업 현장 사진을 생생하게 공유하세요." },
+      { text: "클래스/서비스별 세부 커리큘럼과 금액이 명시되어 있다", p: 2, tip: "소요 시간, 준비물, 금액이 포함된 커리큘럼을 투명하게 공개하세요." },
+      { text: "예약 신청 및 1:1 톡톡/전화 상담 동선이 구축되어 있다", p: 2, tip: "네이버 톡톡 상담과 예약 시스템을 상시 열어두어 문의를 즉각 흡수하세요." },
+      { text: "우리 매장만의 차별화된 스토리 및 방문 이유가 소개되어 있다", p: 1, tip: "우리 매장만의 철학과 특별한 서비스 경험을 브랜드 소개글에 녹여내세요." }
+    ]
+  }
+};
+
+var currentTypeKey = "food";
+var currentQuestions = [];
+var isAllCheckedState = false;
+
+function $(id) { return document.getElementById(id); }
+
+function showStep(stepNum) {
+  ["s1", "s2", "s3"].forEach(function(k) {
+    $(k).classList.toggle("hide", k !== "s" + stepNum);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function hasType(k) { return Object.prototype.hasOwnProperty.call(T, k); }
+
+function toast(m) {
+  var e = $("toast");
+  e.textContent = m;
+  e.classList.add("show");
+  setTimeout(function() { e.classList.remove("show"); }, 2000);
+}
+
+function copyText(t, msg) {
+  var fb = function() { window.prompt("아래 내용을 복사하세요", t); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(function() { toast(msg); }).catch(fb);
+  } else {
+    fb();
+  }
+}
+
+function getWittyComment(s) {
+  if (s <= 10) return "🚨 네이버 지도에서 매장이 미아 상태예요… 오늘 당장 3가지만 손봐도 달라집니다!";
+  if (s <= 25) return "🚪 간판만 걸고 셔터는 내려두신 상태예요. 손님들이 영업 안 하는 줄 알고 그냥 지나쳐요.";
+  if (s <= 40) return "🍃 옆 매장은 예약 폭주 중인데, 우리 매장엔 찬바람이 부네요… 지금 손볼 곳이 많습니다.";
+  if (s <= 55) return "👔 옷은 멀끔히 입었는데 넥타이를 깜빡한 느낌! 빠진 핵심 몇 가지만 채워도 노출 순위가 확 달라집니다.";
+  if (s <= 70) return "🏃 동네 골목 대장은 가능한 점수! 이제 대로변 1등 매장 잡으러 갈 타이밍입니다.";
+  if (s <= 85) return "👏 플레이스 맛집 인정! 조금만 다듬으면 검색 1페이지 상위 랭킹 방어도 문제없어요.";
+  if (s < 100) return "🎖️ 거의 네이버 플레이스 공무원 수준! 이제 바이럴 후기만 얹으면 대박 납니다.";
+  return "👑 기본 설정 100점 만점! 완벽합니다. 이제 본격적인 고객 유입 마케팅만 남았습니다.";
+}
+
+function updateCount() {
+  var checkedCount = document.querySelectorAll("#qs input:checked").length;
+  $("cnt").textContent = "점검 완료 " + checkedCount + " / 20개";
+  
+  if (checkedCount === 20) {
+    $("btn-toggle-all").textContent = "전체 해제";
+    isAllCheckedState = true;
+  } else {
+    $("btn-toggle-all").textContent = "전체 선택";
+    isAllCheckedState = false;
+  }
+}
+
+function startDiagnostic(k) {
+  currentTypeKey = hasType(k) ? k : "etc";
+  var d = T[currentTypeKey];
+  currentQuestions = C.concat(d.q);
+  
+  $("t2").textContent = d.n + " 플레이스 자가진단";
+  $("b-sub").textContent = d.n + " • 총 20개 문항 체크";
+  
+  $("qs").innerHTML = currentQuestions.map(function(item, i) {
+    return '<label class="q"><input type="checkbox" data-index="' + i + '"><span>'+item.text+'</span></label>';
+  }).join("");
+  
+  updateCount();
+  showStep(2);
+}
+
+document.querySelectorAll("[data-t]").forEach(function(b) {
+  b.onclick = function() { startDiagnostic(b.dataset.t); };
+});
+
+$("qs").addEventListener("change", updateCount);
+$("back").onclick = function() { showStep(1); };
+
+// 전체 선택 / 전체 해제 토글 버튼
+$("btn-toggle-all").onclick = function() {
+  var inputs = document.querySelectorAll("#qs input");
+  isAllCheckedState = !isAllCheckedState;
+  inputs.forEach(function(el) {
+    el.checked = isAllCheckedState;
+  });
+  updateCount();
+};
+
+// 매출 누수 계산기 함수
+function updateLossCalc(score) {
+  var unitVal = parseInt($("unit-slider").value, 10);
+  $("unit-val").textContent = unitVal + "만 원";
+  
+  var lostBase = Math.round((100 - score) * 0.45);
+  if (lostBase < 5) lostBase = 5;
+  $("lost-customers-val").textContent = "약 " + lostBase + "명 / 월";
+  
+  var totalLoss = Math.round(lostBase * unitVal);
+  $("total-loss-val").textContent = "약 " + totalLoss.toLocaleString() + "만 원";
+}
+
+$("unit-slider").oninput = function() {
+  var score = parseInt($("sc").textContent, 10) || 50;
+  updateLossCalc(score);
+};
+
+// 결과 보기 클릭
+$("go").onclick = function() {
+  var inputs = document.querySelectorAll("#qs input");
+  var score = 0;
+  var miss = [];
+  
+  inputs.forEach(function(el, i) {
+    if (el.checked) {
+      score += 5;
+    } else {
+      miss.push(currentQuestions[i]);
+    }
+  });
+
+  $("sc").textContent = score;
+  $("bar").style.width = score + "%";
+  $("witty").textContent = getWittyComment(score);
+
+  miss.sort(function(a, b) { return b.p - a.p; });
+
+  var box = $("todo");
+  if (!miss.length) {
+    box.innerHTML = '<div class="perfect-box"><strong>플레이스 기본 설정이 모두 갖춰져 있어요!</strong><br><small>→ 이제 상위권 유지를 위한 정기적인 후기 관리와 방문객 유입 마케팅을 진행할 차례입니다.</small></div>';
+  } else {
+    box.innerHTML = miss.slice(0, 3).map(function(m) {
+      return '<div class="todo"><strong>' + m.text + '</strong><small>→ ' + m.tip + '</small></div>';
+    }).join("");
+  }
+
+  updateLossCalc(score);
+
+  $("form-link").href = NAVER_FORM_URL;
+  $("kakao-link").href = KAKAO_URL;
+  showStep(3);
+};
+
+$("again").onclick = function() { showStep(1); };
+$("btn-share").onclick = function() {
+  var shareUrl = window.location.href.split('?')[0] + "?type=" + currentTypeKey;
+  copyText(shareUrl, "진단기 링크가 복사되었습니다!");
+};
+
+// 실시간 순위 조회 버튼 이벤트
+$("btn-rank-check").onclick = function() {
+  var inputVal = $("rank-url-input").value.trim();
+  if (!inputVal) {
+    alert("플레이스 링크를 입력해 주세요.");
+    return;
+  }
+  
+  $("rank-loading").classList.remove("hide");
+  $("rank-result").classList.add("hide");
+
+  fetch("/api/rank?placeUrl=" + encodeURIComponent(inputVal))
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      $("rank-loading").classList.add("hide");
+      var resBox = $("rank-result");
+      resBox.classList.remove("hide");
+      
+      if (data.error) {
+        resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
+      } else {
+        resBox.innerHTML = 
+          "<strong>매장명:</strong> " + data.name + "<br>" +
+          "<strong>분석 키워드:</strong> [" + data.keyword + "]<br>" +
+          "<strong>현재 검색 순위:</strong> <span style='color:var(--pt); font-weight:800; font-size:15px;'>" + data.rank + "</span><br>" +
+          "<strong>세팅 지수:</strong> " + data.score + "점 / 100점";
+      }
+    })
+    .catch(function(err) {
+      $("rank-loading").classList.add("hide");
+      var resBox = $("rank-result");
+      resBox.classList.remove("hide");
+      resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위 분석 API 연동 대기 중입니다.</span><br><small style='color:var(--sub);'>아래 2분 체크리스트로 자가진단을 먼저 진행해 보세요!</small>";
+    });
+};
+
+var ut = new URLSearchParams(location.search).get("type");
+if (ut && hasType(ut)) { startDiagnostic(ut); }
+</script>
+
+</body>
+</html>
