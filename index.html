@@ -6,10 +6,7 @@
 <title>내 매장 네이버 플레이스 자가진단 | 비에이커뮤니케이션</title>
 <meta name="description" content="2분 체크로 내 매장 플레이스 점수와 우선순위 개선 과제 3가지를 확인하세요.">
 
-<!-- =================================================================
-     [SNS / 카카오톡 공유 최적화 메타태그 (Open Graph)]
-     * 배포 후 'bacommunication.vercel.app'을 실제 도메인으로 변경하세요.
-================================================================== -->
+<!-- SNS / 카카오톡 공유 최적화 메타태그 (Open Graph) -->
 <meta property="og:title" content="내 매장 네이버 플레이스 자가진단 | 비에이커뮤니케이션">
 <meta property="og:description" content="우리 매장 지도 점수와 당장 바꿔야 할 3가지 (2분 무료 점검)">
 <meta property="og:type" content="website">
@@ -297,6 +294,21 @@ label.q span { font-size: 15px; line-height: 1.5; }
   color: var(--warn);
 }
 
+/* 100점 만점 전용 칭찬 카드 */
+.praise-box {
+  border-left: 4px solid var(--pt);
+  background: rgba(47, 74, 60, 0.06);
+  border-radius: 12px;
+  padding: 18px;
+  margin: 12px 0;
+}
+.praise-box h3 {
+  margin: 0 0 8px;
+  color: var(--pt);
+  font-size: 18px;
+  font-weight: 800;
+}
+
 /* Before / After 쇼케이스 */
 .ba-grid {
   display: grid;
@@ -328,24 +340,6 @@ label.q span { font-size: 15px; line-height: 1.5; }
   color: var(--blue);
 }
 .gift-banner strong { font-size: 14px; display: block; margin-bottom: 4px; }
-
-/* 토글 헤더 */
-.qs-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.btn-toggle-all {
-  font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  cursor: pointer;
-  font-weight: 600;
-}
 
 /* 실시간 순위 조회기 카드 */
 .rank-search-box {
@@ -449,9 +443,8 @@ footer {
     <h1 id="t2">매장 자가진단</h1>
     <p>스마트폰으로 본인 매장의 <strong>네이버 플레이스(지도)</strong> 화면을 켜두고, 해당되는 항목을 빠짐없이 체크하세요.</p>
     
-    <div class="qs-header">
+    <div style="margin-bottom:6px;">
       <span style="font-size:13px; font-weight:700; color:var(--sub);">총 20개 점검 항목</span>
-      <button type="button" id="btn-toggle-all" class="btn-toggle-all">전체 선택</button>
     </div>
 
     <div class="card" id="qs" style="margin-top:4px;"></div>
@@ -517,8 +510,8 @@ footer {
       </table>
     </div>
 
-    <!-- 월 예상 매출 누수 계산기 -->
-    <div class="card">
+    <!-- 매출 누수 계산기 카드 (100점 미만 시에만 표시) -->
+    <div class="card" id="loss-card">
       <h2>📉 월 예상 고객·매출 누수 계산기</h2>
       <p style="font-size:13px;">플레이스 세팅 미흡으로 인근 상위 경쟁 매장에 빼앗기고 있는 월간 예상 손실액입니다.</p>
       <div class="loss-box">
@@ -537,6 +530,20 @@ footer {
           <span style="font-size:13px; color:var(--warn); font-weight:700;">월간 예상 누수 매출액</span>
           <div class="loss-num" id="total-loss-val">약 250만 원</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 100점 만점 전용 칭찬 카드 (100점 달성 시에만 표시) -->
+    <div class="card hide" id="praise-card">
+      <div class="praise-box">
+        <h3>👑 고객 누수 0원! 완벽하게 방어 중입니다</h3>
+        <p style="font-size:14px; margin-bottom:8px; color:var(--ink);">
+          플레이스 필수 20개 항목이 모두 완벽히 갖춰져 있습니다.<br>
+          세팅 미흡으로 인해 <strong>경쟁 매장으로 새어나가는 고객과 매출 누수가 전혀 없습니다.</strong>
+        </p>
+        <small style="color:var(--pt); font-weight:700; font-size:13px; display:block; margin-top:8px;">
+          💡 다음 단계: 이제는 탄탄한 기본기를 바탕으로 '1페이지 상위 랭킹 유지'와 '블로그 체험단 바이럴'로 유입을 폭발시킬 차례입니다.
+        </small>
       </div>
     </div>
 
@@ -674,7 +681,6 @@ var T = {
 
 var currentTypeKey = "food";
 var currentQuestions = [];
-var isAllCheckedState = false;
 
 function $(id) { return document.getElementById(id); }
 
@@ -717,14 +723,6 @@ function getWittyComment(s) {
 function updateCount() {
   var checkedCount = document.querySelectorAll("#qs input:checked").length;
   $("cnt").textContent = "점검 완료 " + checkedCount + " / 20개";
-  
-  if (checkedCount === 20) {
-    $("btn-toggle-all").textContent = "전체 해제";
-    isAllCheckedState = true;
-  } else {
-    $("btn-toggle-all").textContent = "전체 선택";
-    isAllCheckedState = false;
-  }
 }
 
 function startDiagnostic(k) {
@@ -749,16 +747,6 @@ document.querySelectorAll("[data-t]").forEach(function(b) {
 
 $("qs").addEventListener("change", updateCount);
 $("back").onclick = function() { showStep(1); };
-
-// 전체 선택 / 전체 해제 토글 버튼
-$("btn-toggle-all").onclick = function() {
-  var inputs = document.querySelectorAll("#qs input");
-  isAllCheckedState = !isAllCheckedState;
-  inputs.forEach(function(el) {
-    el.checked = isAllCheckedState;
-  });
-  updateCount();
-};
 
 // 매출 누수 계산기 함수
 function updateLossCalc(score) {
@@ -807,7 +795,15 @@ $("go").onclick = function() {
     }).join("");
   }
 
-  updateLossCalc(score);
+  // 100점 만점일 경우 매출 누수 계산기를 숨기고 칭찬 카드를 노출
+  if (score === 100) {
+    $("loss-card").classList.add("hide");
+    $("praise-card").classList.remove("hide");
+  } else {
+    $("loss-card").classList.remove("hide");
+    $("praise-card").classList.add("hide");
+    updateLossCalc(score);
+  }
 
   $("form-link").href = NAVER_FORM_URL;
   $("kakao-link").href = KAKAO_URL;
@@ -852,7 +848,7 @@ $("btn-rank-check").onclick = function() {
       $("rank-loading").classList.add("hide");
       var resBox = $("rank-result");
       resBox.classList.remove("hide");
-      resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위 분석 API 연동 대기 중입니다.</span><br><small style='color:var(--sub);'>아래 2분 체크리스트로 자가진단을 먼저 진행해 보세요!</small>";
+      resBox.innerHTML = "<span style='color:var(--pt); font-weight:700;'>✅ 매장 링크가 확인되었습니다.</span><br><small style='color:var(--sub);'>정확한 진단을 위해 아래 업종을 선택하고 2분 체크리스트를 진행해 보세요!</small>";
     });
 };
 
