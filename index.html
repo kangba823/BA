@@ -405,14 +405,14 @@ label.q span { font-size: 15px; line-height: 1.5; }
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 2001;
+  z-index: 2100;
 }
 #toast.show { opacity: 1; }
 .counter { text-align: center; font-size: 14px; color: var(--sub); margin: 8px 0; font-weight: 600; }
 .hide { display: none !important; }
 
 /* -----------------------------------------------------------
-   공유 모달 & 미리보기 카드 스타일
+   공유 모달 & 미리보기 카드 (다크모드 완벽 대응)
 ----------------------------------------------------------- */
 .modal-overlay {
   position: fixed;
@@ -420,7 +420,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -435,11 +435,13 @@ label.q span { font-size: 15px; line-height: 1.5; }
 }
 .modal-sheet {
   background: var(--card);
+  color: var(--ink);
   width: 100%;
   max-width: 560px;
   border-radius: 20px 20px 0 0;
+  border-top: 1px solid var(--line);
   padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.25);
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 90vh;
@@ -469,9 +471,9 @@ label.q span { font-size: 15px; line-height: 1.5; }
   padding: 4px 8px;
 }
 
-/* 공유 미리보기 박스 */
+/* 공유 미리보기 박스 (다크모드 테마 적응형) */
 .share-preview-box {
-  background: #f8fafc;
+  background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 14px;
@@ -480,7 +482,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
 }
 .share-preview-badge {
   display: inline-block;
-  background: rgba(47, 74, 60, 0.1);
+  background: rgba(47, 74, 60, 0.15);
   color: var(--pt);
   font-size: 11px;
   font-weight: 700;
@@ -491,15 +493,15 @@ label.q span { font-size: 15px; line-height: 1.5; }
 .share-preview-content {
   font-size: 13px;
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.55;
   white-space: pre-line;
-  background: #ffffff;
+  background: var(--card);
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--line);
 }
 
-/* 공유 버튼 그리드 (4개) */
+/* 공유 채널 그리드 */
 .share-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -615,9 +617,9 @@ footer {
             👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
           </button>
 
-          <!-- 공유 모달 오픈 버튼 -->
-          <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:13px; margin:0; border-style:solid; background:var(--card);">
-            📲 순위 공유하기 (카톡 · 스레드 · 인스타 · 링크)
+          <!-- 순위 공유하기 버튼 (모바일 최적화 텍스트) -->
+          <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:14px; font-weight:700; margin:0; border-style:solid; background:var(--card);">
+            📲 순위 공유하기
           </button>
         </div>
       </div>
@@ -801,7 +803,7 @@ footer {
 </main>
 
 <!-- -----------------------------------------------------------
-     공유 전용 미리보기 & 멀티 채널 바텀시트 모달
+     공유 전용 미리보기 & 멀티 채널 바텀시트 모달 (다크모드 완벽 대응)
 ----------------------------------------------------------- -->
 <div id="share-modal" class="modal-overlay">
   <div class="modal-sheet">
@@ -810,16 +812,10 @@ footer {
       <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
     </div>
 
-    <!-- 상대방 화면에 어떻게 보이는지 미리보기 카드 -->
+    <!-- 공유 미리보기 카드 -->
     <div class="share-preview-box">
       <span class="share-preview-badge">메시지 전송 미리보기</span>
-      <div class="share-preview-content" id="modal-preview-text">
-        [공유] 우리 동네 1등 매장 네이버 플레이스 순위 까보는 사이트 🔍
-        
-        길 건너 잘나가는 매장 링크 넣으면 실시간 모바일 순위랑 어떤 키워드로 노출되는지 바로 뜹니다.
-        
-        👉 실시간 순위 무료 조회: https://place.bacommu.com
-      </div>
+      <div class="share-preview-content" id="modal-preview-text"></div>
     </div>
 
     <!-- 4대 공유 채널 버튼 그리드 -->
@@ -836,10 +832,10 @@ footer {
         <span class="share-item-label">스레드</span>
       </div>
 
-      <!-- 3. 인스타그램 -->
+      <!-- 3. 인스타그램 스토리 -->
       <div class="share-item-btn" id="share-to-insta">
         <div class="share-icon-circle share-icon-insta">📷</div>
-        <span class="share-item-label">인스타그램</span>
+        <span class="share-item-label">인스타 스토리</span>
       </div>
 
       <!-- 4. 링크 복사 -->
@@ -849,8 +845,8 @@ footer {
       </div>
     </div>
 
-    <small style="font-size:12px; color:var(--sub); display:block; text-align:center;">
-      원하는 채널을 선택하시면 문구와 링크가 즉시 연동됩니다.
+    <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:8px;">
+      채널을 선택하시면 추천 문구와 링크가 바로 연결됩니다.
     </small>
   </div>
 </div>
@@ -866,13 +862,6 @@ footer {
 var NAVER_FORM_URL = "https://naver.me/G0pu2btc";
 var KAKAO_URL = "https://pf.kakao.com/_xhGxhxib/chat";
 var SITE_SHARE_URL = "https://place.bacommu.com";
-
-// 현재 조회된 매장 데이터 저장용 객체
-var lastAnalyzedData = {
-  name: "우리 매장",
-  keyword: "지역 맛집",
-  rank: "순위 확인"
-};
 
 var C = [
   { text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 수치가 개선의 명확한 기준이 됩니다." },
@@ -1199,8 +1188,8 @@ $("btn-rank-check").onclick = function() {
       '<button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">' +
         '👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓' +
       '</button>' +
-      '<button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:13px; margin:0; border-style:solid; background:var(--card);">' +
-        '📲 순위 공유하기 (카톡 · 스레드 · 인스타 · 링크)' +
+      '<button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:14px; font-weight:700; margin:0; border-style:solid; background:var(--card);">' +
+        '📲 순위 공유하기' +
       '</button>' +
     '</div>';
 
@@ -1217,12 +1206,6 @@ $("btn-rank-check").onclick = function() {
         resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>URL 링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
         return;
       }
-
-      lastAnalyzedData = {
-        name: data.name,
-        keyword: data.keyword,
-        rank: data.rankNum ? data.rankNum + "위" : "100위 밖"
-      };
 
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
@@ -1257,16 +1240,13 @@ $("btn-rank-check").onclick = function() {
 };
 
 // -------------------------------------------------------------
-// [공유 모달 열기/닫기 및 4대 SNS 채널별 연동]
+// [심리학 기반 바이럴 카피 & 멀티 SNS 공유 연동]
 // -------------------------------------------------------------
 function buildShareMessage() {
-  return "[공유] 우리 동네 1등 매장 네이버 플레이스 순위 까보는 사이트 🔍\n\n" +
-         "• 매장명: " + lastAnalyzedData.name + "\n" +
-         "• 검색 키워드: [" + lastAnalyzedData.keyword + "]\n" +
-         "• 실시간 순위: " + lastAnalyzedData.rank + "\n\n" +
-         "길 건너 잘나가는 매장 링크 넣으면 실시간 순위랑 노출 키워드가 바로 뜹니다.\n" +
-         "단톡방 사장님들도 인근 경쟁 매장 순위 한번 돌려보세요!\n\n" +
-         "👉 실시간 순위 무료 조회: " + SITE_SHARE_URL;
+  return "[공유] 우리 동네 1등 매장 네이버 지도 순위 까보는 사이트 🔍\n\n" +
+         "마케팅 대행사 유료 프로그램 쓸 필요 없이, 네이버 지도 링크만 넣으면 모바일 1~100위 실시간 순위랑 노출 키워드 다 잡아주네요.\n\n" +
+         "길 건너 경쟁 매장이나 우리 매장 순위 궁금하신 사장님들 1분이면 조회되니 한번 돌려보세요!\n\n" +
+         "👉 실시간 플레이스 순위 무료 조회: " + SITE_SHARE_URL;
 }
 
 function openShareModal() {
@@ -1302,7 +1282,7 @@ $("share-to-kakao").onclick = function() {
   }
 };
 
-// 2. 스레드 (Threads) 공유 (공식 intent 연동)
+// 2. 스레드 (Threads) 공유
 $("share-to-threads").onclick = function() {
   var msg = buildShareMessage();
   var threadsUrl = "https://threads.net/intent/post?text=" + encodeURIComponent(msg);
@@ -1310,12 +1290,17 @@ $("share-to-threads").onclick = function() {
   closeShareModal();
 };
 
-// 3. 인스타그램 (Instagram) 공유 (문구 복사 후 인스타 이동)
+// 3. 인스타그램 스토리 공유 (문구 자동 복사 + 스토리 카메라 즉시 호출)
 $("share-to-insta").onclick = function() {
   var msg = buildShareMessage();
-  copyText(msg, "추천 문구가 복사되었습니다! 인스타그램 피드/DM에 붙여넣으세요.");
+  copyText(msg, "문구가 복사되었습니다! 인스타 스토리에서 텍스트(Aa)를 눌러 붙여넣으세요.");
   setTimeout(function() {
-    window.open("https://www.instagram.com/", "_blank");
+    // 모바일 인스타그램 스토리 카메라 호출
+    window.location.href = "instagram://story-camera";
+    setTimeout(function() {
+      // 앱 미설치 시 웹 인스타그램 대체 오픈
+      window.open("https://www.instagram.com/", "_blank");
+    }, 1200);
   }, 400);
   closeShareModal();
 };
