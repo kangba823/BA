@@ -11,8 +11,10 @@
   <link rel="canonical" href="https://place.bacommu.com">
   <script defer src="/_vercel/insights/script.js"></script>
 
+  <!-- 경량 QR 코드 엔진 (캔버스 직접 렌더링용) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
+  <!-- SNS / 카카오톡 공유 최적화 메타태그 (Open Graph) -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:site_name" content="랭크노트 by 비에이커뮤니케이션">
@@ -23,6 +25,7 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
+  <!-- 네이버 검색 로봇용 JSON-LD 구조화 데이터 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -577,6 +580,7 @@ footer {
 <body>
 
 <main>
+  <!-- STEP 1: 업종 선택 -->
   <div id="s1">
     <div>
       <span class="social-proof">📊 전국 <strong>1,200+</strong>개 매장 진단 완료</span>
@@ -585,6 +589,7 @@ footer {
     <h1>내 매장 네이버 플레이스,<br>지금 몇 점일까요?</h1>
     <p>2분 체크로 우리 매장 지도 점수와 <strong>지금 당장 바꿔야 할 핵심 과제 3가지</strong>를 확인하세요. 로그인 없이 즉시 확인 가능합니다.</p>
     
+    <!-- 실시간 순위 조회 입력기 -->
     <div class="card" style="border: 1.5px solid var(--pt);">
       <h2 style="margin-bottom:4px;">🔍 실시간 플레이스 순위 자동 분석</h2>
       <p style="font-size:13px; margin-bottom:8px;">네이버 플레이스에서 [공유 ➔ URL 복사]한 링크(naver.me)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
@@ -599,22 +604,27 @@ footer {
         ⚡ 네이버 지도 실시간 검색 순위를 스캔하고 있습니다...
       </div>
       
+      <!-- 동적 결과 카드 -->
       <div id="rank-result" class="hide" style="margin-top:14px; padding:16px; border-radius:12px; background:var(--bg); border:1px solid var(--line); text-align:center;">
         <div id="rank-content-wrap">
           <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
           <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
           
+          <!-- 숫자 롤링 전광판 -->
           <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
             <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
             <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
           </div>
           
+          <!-- 맞춤 상태 코멘트 -->
           <div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
           
+          <!-- 자가진단 유도 CTA 버튼 -->
           <button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">
             👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
           </button>
 
+          <!-- 순위 공유하기 버튼 -->
           <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:14px; font-weight:700; margin:0; border-style:solid; background:var(--card);">
             📲 순위 공유하기
           </button>
@@ -622,6 +632,7 @@ footer {
       </div>
     </div>
 
+    <!-- 업종 선택 카드 -->
     <div class="card" id="industry-card">
       <h2>진단할 업종을 선택하세요</h2>
       <button class="btn" data-t="food">🍽️ 식당 · 카페 · 디저트</button>
@@ -633,6 +644,7 @@ footer {
     <small class="guide-text" style="color:var(--sub); display:block; font-size:13px;">※ 병·의원 등 의료기관 및 의료법 규제 업종은 진단 대상에서 제외됩니다.</small>
   </div>
 
+  <!-- STEP 2: 자가점검 체크리스트 (20문항) -->
   <div id="s2" class="hide">
     <button class="btn sub-line" id="back" type="button" style="min-height:40px;margin:0 0 10px">← 업종 다시 선택</button>
     <div class="brand-badge" id="b-sub">자가진단 진행 중</div>
@@ -648,7 +660,9 @@ footer {
     <button class="btn pri" id="go">내 점수 및 진단 결과 보기 →</button>
   </div>
 
+  <!-- STEP 3: 진단 결과 및 리드 전환 동선 -->
   <div id="s3" class="hide">
+    <!-- 캡처 권장 안내 배너 -->
     <div class="capture-notice">
       📸 현재 진단 결과를 캡처해 두시면, 1:1 상담 시 훨씬 빠르고 정확한 맞춤 진단이 가능합니다.
     </div>
@@ -660,12 +674,14 @@ footer {
       <div class="witty-comment" id="witty"></div>
     </div>
 
+    <!-- 우선순위 과제 -->
     <div class="card">
       <h2>우선순위 개선 과제 3가지</h2>
       <p style="font-size:14px;">검색 노출 순위와 예약 전환에 직결되는 가장 시급한 보완 항목입니다.</p>
       <div id="todo"></div>
     </div>
 
+    <!-- 1등 매장 vs 내 매장 비교표 -->
     <div class="card">
       <h2>🏆 동네 상위 1~3위 매장 vs 내 매장 비교</h2>
       <p style="font-size:13px;">우리 동네 1~3위 매장이 손님을 독점하는 핵심 차이입니다.</p>
@@ -702,6 +718,7 @@ footer {
       </table>
     </div>
 
+    <!-- 매출 누수 계산기 카드 (100점 미만 시에만 표시) -->
     <div class="card" id="loss-card">
       <h2>📉 월 예상 고객·매출 누수 계산기</h2>
       <p style="font-size:13px;">플레이스 세팅 미흡으로 인근 상위 경쟁 매장에 빼앗기고 있는 월간 예상 손실액입니다.</p>
@@ -724,6 +741,7 @@ footer {
       </div>
     </div>
 
+    <!-- 100점 만점 전용 칭찬 카드 (100점 달성 시에만 표시) -->
     <div class="card hide" id="praise-card">
       <div class="praise-box">
         <h3>👑 고객 누수 0원! 완벽하게 방어 중입니다</h3>
@@ -737,6 +755,7 @@ footer {
       </div>
     </div>
 
+    <!-- 세팅 Before & After 쇼케이스 -->
     <div class="card">
       <h2>✨ 세팅 작업 전후 (Before & After)</h2>
       <div class="ba-grid">
@@ -757,9 +776,11 @@ footer {
       </div>
     </div>
 
+    <!-- 리드 전환 카드 -->
     <div class="card">
       <h2>전문가 1:1 정밀 분석 리포트 신청</h2>
       
+      <!-- PDF 증정 배너 -->
       <div class="gift-banner">
         <strong>🎁 신청자 전원 100% 무료 혜택</strong>
         [2026 네이버 플레이스 상위노출 7가지 비밀 공식 (PDF 요약본)]을 비용 없이 함께 발송해 드립니다.
@@ -767,10 +788,12 @@ footer {
 
       <p>매장명과 플레이스 링크를 남겨주시면, 인근 경쟁 매장 분석 및 노출 개선 키워드가 담긴 분석 리포트 요약본을 <strong>카카오톡 또는 문자로 먼저 발송</strong>해 드립니다. (상담 비용은 전혀 발생하지 않습니다)</p>
       
+      <!-- 네이버 폼 링크 -->
       <a class="btn pri" id="form-link" href="https://naver.me/G0pu2btc" target="_blank" rel="noopener">
         📄 1:1 무료 정밀 진단서 신청하기
       </a>
       
+      <!-- 카카오톡 채널 링크 -->
       <a class="btn kakao" id="kakao-link" href="https://pf.kakao.com/_xhGxhxib/chat" target="_blank" rel="noopener">
         💬 카카오톡으로 실시간 빠른 문의
       </a>
@@ -786,6 +809,9 @@ footer {
   </div>
 </main>
 
+<!-- -----------------------------------------------------------
+     공유 전용 미리보기 & 멀티 채널 바텀시트 모달
+----------------------------------------------------------- -->
 <div id="share-modal" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-header">
@@ -793,37 +819,44 @@ footer {
       <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
     </div>
 
+    <!-- 공유 미리보기 카드 -->
     <div class="share-preview-box">
       <span class="share-preview-badge">전송 문구 미리보기</span>
       <div class="share-preview-content" id="modal-preview-text"></div>
     </div>
 
+    <!-- 4대 공유 채널 버튼 그리드 -->
     <div class="share-grid">
+      <!-- 1. 카카오톡 -->
       <div class="share-item-btn" id="share-to-kakao">
         <div class="share-icon-circle share-icon-kakao">💬</div>
         <span class="share-item-label">카카오톡</span>
       </div>
 
+      <!-- 2. 스레드 (Threads) -->
       <div class="share-item-btn" id="share-to-threads">
         <div class="share-icon-circle share-icon-threads">@</div>
         <span class="share-item-label">스레드</span>
       </div>
 
+      <!-- 3. 이미지 직접 저장 -->
       <div class="share-item-btn" id="share-image">
         <div class="share-icon-circle share-icon-img">🖼️</div>
         <span class="share-item-label">이미지 저장</span>
       </div>
 
+      <!-- 4. 링크 복사 -->
       <div class="share-item-btn" id="share-to-link">
         <div class="share-icon-circle share-icon-link">🔗</div>
         <span class="share-item-label">링크 복사</span>
       </div>
     </div>
 
+    <!-- 이미지 다운로드 미리보기 영역 -->
     <img id="card-preview" class="hide" alt="성적표 공유 이미지" style="width:100%; border-radius:12px; margin-top:10px; border:1px solid var(--line); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
     
-    <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:12px;">
-      💡 TIP: 이미지를 저장한 뒤 단톡방이나 인스타에 링크와 함께 공유해 보세요.<br>(이미지 속 QR코드로 다른 사장님들도 즉시 무료 조회가 가능합니다)
+    <small id="img-save-guide" style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:12px;">
+      💡 [이미지 저장]을 누르면 성적표가 기기 갤러리/다운로드 폴더에 자동 저장됩니다.<br>(아이폰 등 일부 기기는 아래 이미지를 길게 꾹 눌러 '사진에 저장'할 수도 있습니다)
     </small>
   </div>
 </div>
@@ -1045,7 +1078,7 @@ $("again").onclick = function() { showStep(1); };
 $("btn-share").onclick = function() { openShareModal(); };
 
 // -------------------------------------------------------------
-// [실시간 순위 분석 정밀 3.8초 슬롯머신 감속 롤링 애니메이션]
+// [실시간 순위 분석 감속 롤링 애니메이션]
 // -------------------------------------------------------------
 function runRankRolling(targetRankNum, callback) {
   var el = $("res-rolling-rank");
@@ -1102,13 +1135,13 @@ function getRankInsight(rankNum) {
     return {
       bg: "var(--warn-bg)",
       color: "var(--warn)",
-      text: "🚨 [순위 미노출] 신규 손님 유입이 완전히 차단된 상태입니다. 당장 기본 세팅 3가지만 채워도 노출이 시작됩니다."
+      text: "🚨 [순위 미노출] 신규 손님 유입이 차단된 상태입니다. 당장 기본 세팅 3가지만 채워도 노출이 시작됩니다."
     };
   } else if (rankNum > 10) {
     return {
       bg: "var(--warn-bg)",
       color: "var(--warn)",
-      text: "⚠️ [2~3페이지 정체] 검색은 되지만 손님들이 1페이지 매장에 다 뺏기고 있습니다. 1페이지 진입을 위한 보완이 시급합니다."
+      text: "⚠️ [2~3페이지 정체] 검색은 되지만 손님들이 1페이지 매장에 뺏기고 있습니다. 1페이지 진입을 위한 보완이 시급합니다."
     };
   } else if (rankNum > 3) {
     return {
@@ -1146,7 +1179,7 @@ $("btn-rank-check").onclick = function() {
         "<div style='font-size:13px; color:var(--ink);'>" +
           "1. <strong>네이버 지도 앱</strong>에서 내 매장을 검색합니다.<br>" +
           "2. 매장 화면 우측 상단 <strong>[공유(아이콘)]</strong>을 터치합니다.<br>" +
-          "3. <strong>https://namu.wiki/w/%EB%B3%B5%EC%82%AC</strong>를 누른 뒤 여기에 붙여넣어 주세요!" +
+          "3. <strong>[URL 복사]</strong>를 누른 뒤 여기에 붙여넣어 주세요!" +
         "</div>" +
       "</div>";
     return;
@@ -1186,7 +1219,7 @@ $("btn-rank-check").onclick = function() {
       }
 
       shareCtx = { kind: "rank", rank: data.rankNum, kw: data.keyword };
-      prepCard(); // 카드 미리 생성
+      prepCard();
 
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + esc(data.keyword) + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
@@ -1221,16 +1254,16 @@ $("btn-rank-check").onclick = function() {
 };
 
 // -------------------------------------------------------------
-// [심리학 기반 바이럴 카피 & 4대 채널 공유 연동]
+// [심리학 기반 단일 링크 카피 & 4대 채널 공유 연동]
 // -------------------------------------------------------------
 var shareCtx = { kind: "site" };
 
-function shareUrl(src) {
+function shareUrl() {
   return SITE_SHARE_URL;
 }
 
-function buildShareMessage(src) {
-  var url = shareUrl(src), c = shareCtx;
+function buildShareMessage() {
+  var url = shareUrl(), c = shareCtx;
   if (c.kind === "rank" && c.rank) {
     var kw = c.kw ? "'" + c.kw + "' " : "";
     if (c.rank <= 3) return "👑 우리 동네 1등 매장 네이버 플레이스 순위 조회 사이트 발견!\n\n우리 가게 " + kw + "검색하니 " + c.rank + "위 안착해 있네요.\n대행사 유료 프로그램 쓸 필요 없이 무료로 바로 나옵니다 👇\n" + url;
@@ -1245,7 +1278,7 @@ function buildShareMessage(src) {
 function openShareModal() {
   $("card-preview").classList.add("hide");
   prepCard();
-  $("modal-preview-text").textContent = buildShareMessage("preview");
+  $("modal-preview-text").textContent = buildShareMessage();
   $("share-modal").classList.add("active");
 }
 
@@ -1258,31 +1291,32 @@ $("share-modal").onclick = function(e) {
   if (e.target === $("share-modal")) closeShareModal();
 };
 
-// 1. 카카오톡 공유
+// 1. 카카오톡 공유 (링크 1개만 깔끔하게 전달)
 $("share-to-kakao").onclick = function() {
-  var msg = buildShareMessage("kakao");
+  var msg = buildShareMessage();
   var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile && navigator.share) {
-    navigator.share({ title: "랭크노트", text: msg, url: SITE_SHARE_URL }).then(closeShareModal).catch(function() {});
+    // text 안에 이미 링크가 포함되어 있으므로 url 옵션을 빼서 중복을 원천 차단합니다.
+    navigator.share({ text: msg }).then(closeShareModal).catch(function() {});
   } else {
-    copyText(msg, "추천 공유 문구가 복사되었어요! 카톡 대화방에 붙여넣기 하세요 😊");
+    copyText(msg, "공유 문구가 복사되었어요! 카톡 대화방에 붙여넣기 하세요 😊");
     closeShareModal();
   }
 };
 
 // 2. 스레드 (Threads) 공유
 $("share-to-threads").onclick = function() {
-  window.open("https://www.threads.com/intent/post?text=" + encodeURIComponent(buildShareMessage("threads")), "_blank", "noopener");
+  window.open("https://www.threads.com/intent/post?text=" + encodeURIComponent(buildShareMessage()), "_blank", "noopener");
   closeShareModal();
 };
 
 // 3. 링크 복사
 $("share-to-link").onclick = function() {
-  copyText(shareUrl("link"), "진단기 링크가 클립보드에 복사되었어요!");
+  copyText(shareUrl(), "진단기 링크가 클립보드에 복사되었어요!");
   closeShareModal();
 };
 
-// 4. 고화질 성적표 카드 캔버스 생성 (QR코드 탑재 1080x1920)
+// 4. 고화질 성적표 카드 캔버스 생성 (QR코드 포함 1080x1920)
 function makeCard(cb) {
   var W = 1080, H = 1920, c = document.createElement("canvas");
   c.width = W; c.height = H;
@@ -1332,7 +1366,7 @@ function makeCard(cb) {
   // 5) 인사이트 한 줄 평
   x.font = "700 52px " + FONT; x.fillText(msg, W / 2, 1140);
 
-  // 6) QR 코드 + 카메라 스캔 안내 카드 (화이트 박스)
+  // 6) QR 코드 + 카메라 스캔 안내 카드
   var boxX = 70, boxY = 1320, boxW = 940, boxH = 340, boxR = 28;
   x.fillStyle = "#ffffff";
   x.beginPath();
@@ -1343,7 +1377,6 @@ function makeCard(cb) {
     x.fillRect(boxX, boxY, boxW, boxH);
   }
 
-  // 실제 QR 코드 렌더링 (250x250)
   var qrSize = 250;
   var qrX = boxX + 45;
   var qrY = boxY + 45;
@@ -1359,26 +1392,21 @@ function makeCard(cb) {
     } catch(e) {}
   }
 
-  // QR 코드 옆 텍스트 안내 영역
   var textStartX = qrX + qrSize + 40;
   x.textAlign = "left";
   
-  // 뱃지 타이틀
   x.fillStyle = "#2f4a3c";
   x.font = "800 34px " + FONT;
   x.fillText("📷 카메라로 스캔하세요", textStartX, boxY + 95);
 
-  // 메인 카피
   x.fillStyle = "#111111";
   x.font = "900 48px " + FONT;
   x.fillText("내 가게 순위 무료 진단", textStartX, boxY + 168);
 
-  // 서브 카피
   x.fillStyle = "#666666";
   x.font = "600 32px " + FONT;
   x.fillText("1분 만에 실시간 등수 확인", textStartX, boxY + 230);
 
-  // 링크 도메인
   x.fillStyle = "#1d4ed8";
   x.font = "700 30px " + FONT;
   x.fillText("place.bacommu.com", textStartX, boxY + 285);
@@ -1394,58 +1422,41 @@ function makeCard(cb) {
   c.toBlob(cb, "image/png");
 }
 
-var cardBlob = null, cardFile = null;
+var cardBlob = null;
 function prepCard() {
-  cardBlob = null; cardFile = null;
+  cardBlob = null;
   makeCard(function(b) {
     if (!b) return;
     cardBlob = b;
-    try { cardFile = new File([b], "ranknote.png", { type: "image/png" }); } catch (e) {}
   });
 }
 
-// 이미지 자동 저장/다운로드 트리거 함수
+// 이미지 직접 다운로드 트리거 함수 (공유창 X, 기기 자동 다운로드 O)
 function downloadCardImage() {
   if (!cardBlob) {
-    toast("이미지 생성 중이에요. 1초 뒤 다시 눌러주세요 😊");
+    toast("이미지 만드는 중이에요. 1초 뒤 다시 눌러주세요 😊");
     prepCard();
     return;
   }
 
-  // 모바일 Web Share API로 파일 공유가 직접 가능한 경우 우선 호출
-  if (cardFile && navigator.canShare && navigator.canShare({ files: [cardFile] })) {
-    navigator.share({
-      files: [cardFile],
-      title: "랭크노트 성적표",
-      text: "우리 매장 네이버 플레이스 성적표 확인하기 👉 " + SITE_SHARE_URL
-    }).then(closeShareModal).catch(function(e) {
-      if (e && e.name === "AbortError") return;
-      directDownload();
-    });
-  } else {
-    directDownload();
-  }
+  // 모바일/PC 모두 파일로 직접 다운로드 실행
+  var a = document.createElement("a");
+  var objectUrl = URL.createObjectURL(cardBlob);
+  a.href = objectUrl;
+  a.download = "랭크노트_매장성적표.png";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
-  function directDownload() {
-    var a = document.createElement("a");
-    var objectUrl = URL.createObjectURL(cardBlob);
-    a.href = objectUrl;
-    a.download = "랭크노트_매장성적표.png";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function() { URL.revokeObjectURL(objectUrl); }, 1000);
+  // 모달 내 미리보기 이미지 노출 (길게 눌러 저장 대비)
+  var img = $("card-preview");
+  img.src = objectUrl;
+  img.classList.remove("hide");
 
-    // 모달 하단에 이미지 미리보기 표시
-    var img = $("card-preview");
-    img.src = objectUrl;
-    img.classList.remove("hide");
-
-    toast("이미지가 저장되었어요! 단톡방이나 인스타에 링크와 함께 공유해 보세요 📷");
-  }
+  toast("이미지가 갤러리/다운로드 폴더에 저장되었어요! 📷");
 }
 
-// 5. 이미지 저장 버튼 클릭
+// 5. 이미지 저장 버튼 클릭 시 공유창을 띄우지 않고 직접 다운로드
 $("share-image").onclick = function() {
   downloadCardImage();
 };
