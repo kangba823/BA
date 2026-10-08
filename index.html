@@ -11,9 +11,6 @@
   <link rel="canonical" href="https://place.bacommu.com">
   <script defer src="/_vercel/insights/script.js"></script>
 
-  <!-- 경량 QR 코드 엔진 (캔버스 직접 렌더링용) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-
   <!-- SNS / 카카오톡 공유 최적화 메타태그 (Open Graph) -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
@@ -57,6 +54,7 @@
   --kakao-ink: #191919;
   --blue: #1d4ed8;
   --blue-bg: #eff6ff;
+  --fb: #1877f2;
   box-sizing: border-box;
 }
 
@@ -532,7 +530,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .share-item-btn {
   display: flex;
@@ -562,7 +560,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
 }
 .share-icon-kakao { background: var(--kakao); color: #191919; }
 .share-icon-threads { background: #000000; color: #ffffff; font-family: -apple-system, sans-serif; font-size: 22px; }
-.share-icon-img { background: var(--pt); color: #ffffff; }
+.share-icon-fb { background: var(--fb); color: #ffffff; font-family: -apple-system, sans-serif; font-size: 22px; }
 .share-icon-link { background: #475569; color: #ffffff; }
 .share-item-label { font-size: 12px; font-weight: 700; color: var(--ink); }
 
@@ -662,7 +660,6 @@ footer {
 
   <!-- STEP 3: 진단 결과 및 리드 전환 동선 -->
   <div id="s3" class="hide">
-    <!-- 캡처 권장 안내 배너 -->
     <div class="capture-notice">
       📸 현재 진단 결과를 캡처해 두시면, 1:1 상담 시 훨씬 빠르고 정확한 맞춤 진단이 가능합니다.
     </div>
@@ -718,7 +715,7 @@ footer {
       </table>
     </div>
 
-    <!-- 매출 누수 계산기 카드 (100점 미만 시에만 표시) -->
+    <!-- 매출 누수 계산기 카드 -->
     <div class="card" id="loss-card">
       <h2>📉 월 예상 고객·매출 누수 계산기</h2>
       <p style="font-size:13px;">플레이스 세팅 미흡으로 인근 상위 경쟁 매장에 빼앗기고 있는 월간 예상 손실액입니다.</p>
@@ -741,7 +738,7 @@ footer {
       </div>
     </div>
 
-    <!-- 100점 만점 전용 칭찬 카드 (100점 달성 시에만 표시) -->
+    <!-- 100점 만점 전용 칭찬 카드 -->
     <div class="card hide" id="praise-card">
       <div class="praise-box">
         <h3>👑 고객 누수 0원! 완벽하게 방어 중입니다</h3>
@@ -779,8 +776,6 @@ footer {
     <!-- 리드 전환 카드 -->
     <div class="card">
       <h2>전문가 1:1 정밀 분석 리포트 신청</h2>
-      
-      <!-- PDF 증정 배너 -->
       <div class="gift-banner">
         <strong>🎁 신청자 전원 100% 무료 혜택</strong>
         [2026 네이버 플레이스 상위노출 7가지 비밀 공식 (PDF 요약본)]을 비용 없이 함께 발송해 드립니다.
@@ -788,12 +783,10 @@ footer {
 
       <p>매장명과 플레이스 링크를 남겨주시면, 인근 경쟁 매장 분석 및 노출 개선 키워드가 담긴 분석 리포트 요약본을 <strong>카카오톡 또는 문자로 먼저 발송</strong>해 드립니다. (상담 비용은 전혀 발생하지 않습니다)</p>
       
-      <!-- 네이버 폼 링크 -->
       <a class="btn pri" id="form-link" href="https://naver.me/G0pu2btc" target="_blank" rel="noopener">
         📄 1:1 무료 정밀 진단서 신청하기
       </a>
       
-      <!-- 카카오톡 채널 링크 -->
       <a class="btn kakao" id="kakao-link" href="https://pf.kakao.com/_xhGxhxib/chat" target="_blank" rel="noopener">
         💬 카카오톡으로 실시간 빠른 문의
       </a>
@@ -810,7 +803,7 @@ footer {
 </main>
 
 <!-- -----------------------------------------------------------
-     공유 전용 미리보기 & 멀티 채널 바텀시트 모달
+     공유 전용 미리보기 & 4대 채널 모달
 ----------------------------------------------------------- -->
 <div id="share-modal" class="modal-overlay">
   <div class="modal-sheet">
@@ -839,10 +832,10 @@ footer {
         <span class="share-item-label">스레드</span>
       </div>
 
-      <!-- 3. 이미지 직접 저장 -->
-      <div class="share-item-btn" id="share-image">
-        <div class="share-icon-circle share-icon-img">🖼️</div>
-        <span class="share-item-label">이미지 저장</span>
+      <!-- 3. 페이스북 (Facebook) -->
+      <div class="share-item-btn" id="share-to-facebook">
+        <div class="share-icon-circle share-icon-fb">f</div>
+        <span class="share-item-label">페이스북</span>
       </div>
 
       <!-- 4. 링크 복사 -->
@@ -852,11 +845,8 @@ footer {
       </div>
     </div>
 
-    <!-- 이미지 다운로드 미리보기 영역 -->
-    <img id="card-preview" class="hide" alt="성적표 공유 이미지" style="width:100%; border-radius:12px; margin-top:10px; border:1px solid var(--line); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-    
-    <small id="img-save-guide" style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:12px;">
-      💡 [이미지 저장]을 누르면 성적표가 기기 갤러리/다운로드 폴더에 자동 저장됩니다.<br>(아이폰 등 일부 기기는 아래 이미지를 길게 꾹 눌러 '사진에 저장'할 수도 있습니다)
+    <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:8px;">
+      채널을 터치하시면 추천 문구가 복사되거나 해당 앱/웹으로 즉시 연결됩니다.
     </small>
   </div>
 </div>
@@ -959,7 +949,7 @@ function toast(m) {
   var e = $("toast");
   e.textContent = m;
   e.classList.add("show");
-  setTimeout(function() { e.classList.remove("show"); }, 2800);
+  setTimeout(function() { e.classList.remove("show"); }, 2600);
 }
 
 function copyText(t, msg) {
@@ -1010,7 +1000,6 @@ document.querySelectorAll("[data-t]").forEach(function(b) {
 $("qs").addEventListener("change", updateCount);
 $("back").onclick = function() { showStep(1); };
 
-// 매출 누수 계산기 함수
 function updateLossCalc(score) {
   var unitVal = parseInt($("unit-slider").value, 10);
   $("unit-val").textContent = unitVal + "만 원";
@@ -1029,7 +1018,6 @@ $("unit-slider").oninput = function() {
   updateLossCalc(score);
 };
 
-// 결과 보기 클릭
 $("go").onclick = function() {
   var inputs = document.querySelectorAll("#qs input");
   var score = 0;
@@ -1045,7 +1033,6 @@ $("go").onclick = function() {
 
   $("sc").textContent = score;
   shareCtx = { kind: "score", score: score };
-  prepCard(); // 카드 미리 생성
   $("bar").style.width = score + "%";
   $("witty").textContent = getWittyComment(score);
 
@@ -1077,9 +1064,6 @@ $("go").onclick = function() {
 $("again").onclick = function() { showStep(1); };
 $("btn-share").onclick = function() { openShareModal(); };
 
-// -------------------------------------------------------------
-// [실시간 순위 분석 감속 롤링 애니메이션]
-// -------------------------------------------------------------
 function runRankRolling(targetRankNum, callback) {
   var el = $("res-rolling-rank");
   var statusEl = $("res-scan-status");
@@ -1158,7 +1142,6 @@ function getRankInsight(rankNum) {
   }
 }
 
-// 실시간 순위 조회 버튼 이벤트
 $("btn-rank-check").onclick = function() {
   var inputVal = $("rank-url-input").value.trim();
   if (!inputVal) {
@@ -1219,7 +1202,6 @@ $("btn-rank-check").onclick = function() {
       }
 
       shareCtx = { kind: "rank", rank: data.rankNum, kw: data.keyword };
-      prepCard();
 
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + esc(data.keyword) + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
@@ -1254,7 +1236,7 @@ $("btn-rank-check").onclick = function() {
 };
 
 // -------------------------------------------------------------
-// [심리학 기반 단일 링크 카피 & 4대 채널 공유 연동]
+// [단일 링크 & 4대 채널 공유 연동]
 // -------------------------------------------------------------
 var shareCtx = { kind: "site" };
 
@@ -1276,8 +1258,6 @@ function buildShareMessage() {
 }
 
 function openShareModal() {
-  $("card-preview").classList.add("hide");
-  prepCard();
   $("modal-preview-text").textContent = buildShareMessage();
   $("share-modal").classList.add("active");
 }
@@ -1291,12 +1271,11 @@ $("share-modal").onclick = function(e) {
   if (e.target === $("share-modal")) closeShareModal();
 };
 
-// 1. 카카오톡 공유 (링크 1개만 깔끔하게 전달)
+// 1. 카카오톡 공유
 $("share-to-kakao").onclick = function() {
   var msg = buildShareMessage();
   var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile && navigator.share) {
-    // text 안에 이미 링크가 포함되어 있으므로 url 옵션을 빼서 중복을 원천 차단합니다.
     navigator.share({ text: msg }).then(closeShareModal).catch(function() {});
   } else {
     copyText(msg, "공유 문구가 복사되었어요! 카톡 대화방에 붙여넣기 하세요 😊");
@@ -1310,155 +1289,19 @@ $("share-to-threads").onclick = function() {
   closeShareModal();
 };
 
-// 3. 링크 복사
-$("share-to-link").onclick = function() {
-  copyText(shareUrl(), "진단기 링크가 클립보드에 복사되었어요!");
+// 3. 페이스북 (Facebook) 공유
+$("share-to-facebook").onclick = function() {
+  var msg = buildShareMessage();
+  copyText(msg, "공유 문구가 복사되었어요! 페이스북 본문에 함께 붙여넣기 하세요 😊");
+  var fbUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_SHARE_URL);
+  window.open(fbUrl, "_blank", "noopener,width=600,height=500");
   closeShareModal();
 };
 
-// 4. 고화질 성적표 카드 캔버스 생성 (QR코드 포함 1080x1920)
-function makeCard(cb) {
-  var W = 1080, H = 1920, c = document.createElement("canvas");
-  c.width = W; c.height = H;
-  var x = c.getContext("2d"), s = shareCtx;
-  var FONT = '"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif';
-  var top = "#2f4a3c", bot = "#14241c", label = "", sub = "", big = "", msg = "";
-
-  if (s.kind === "rank" && s.rank) {
-    label = "네이버 지도 실시간 노출 순위";
-    sub = s.kw ? "'" + s.kw + "' 검색 기준" : "";
-    big = s.rank + "위";
-    if (s.rank <= 3) msg = "👑 1페이지 최상위 독점권!";
-    else if (s.rank <= 10) { msg = "⚡ 1등까지 한 끗 차이"; top = "#1d4ed8"; bot = "#0f172a"; }
-    else { msg = "😱 사장님 가게는 몇 위일까요?"; top = "#b4532a"; bot = "#431407"; }
-  } else if (s.kind === "rank") {
-    label = "네이버 지도 검색 순위"; sub = s.kw ? "'" + s.kw + "' 검색 기준" : "";
-    big = "100위 밖"; msg = "😱 사장님 가게는 안전한가요?"; top = "#b4532a"; bot = "#431407";
-  } else if (s.kind === "score") {
-    label = "플레이스 종합 최적화 점수"; big = s.score + "점";
-    msg = s.score >= 80 ? "👏 플레이스 맛집 인정!" : "😅 지금 손볼 곳이 많아요";
-  } else {
-    label = "우리 가게 플레이스 순위"; big = "몇 위?"; msg = "🔍 링크만 넣으면 1분 컷";
-  }
-
-  // 1) 배경 그라데이션
-  var g = x.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, top); g.addColorStop(1, bot);
-  x.fillStyle = g; x.fillRect(0, 0, W, H);
-
-  // 2) 브랜드 뱃지
-  x.textAlign = "center"; x.fillStyle = "#ffffff";
-  x.globalAlpha = 0.85; x.font = "700 48px " + FONT; x.fillText("랭크노트 RANK NOTE", W / 2, 230);
-
-  // 3) 성적 타이틀
-  x.globalAlpha = 1; x.font = "800 60px " + FONT; x.fillText(label, W / 2, 560);
-  if (sub) {
-    var fs = 44; x.font = "600 " + fs + "px " + FONT;
-    while (x.measureText(sub).width > W - 140 && fs > 26) { fs -= 2; x.font = "600 " + fs + "px " + FONT; }
-    x.globalAlpha = 0.85; x.fillText(sub, W / 2, 640); x.globalAlpha = 1;
-  }
-
-  // 4) 점수/등수 메인 텍스트
-  var bs = 300; x.font = "900 " + bs + "px " + FONT;
-  while (x.measureText(big).width > W - 140 && bs > 120) { bs -= 10; x.font = "900 " + bs + "px " + FONT; }
-  x.fillText(big, W / 2, 980);
-
-  // 5) 인사이트 한 줄 평
-  x.font = "700 52px " + FONT; x.fillText(msg, W / 2, 1140);
-
-  // 6) QR 코드 + 카메라 스캔 안내 카드
-  var boxX = 70, boxY = 1320, boxW = 940, boxH = 340, boxR = 28;
-  x.fillStyle = "#ffffff";
-  x.beginPath();
-  if (x.roundRect) {
-    x.roundRect(boxX, boxY, boxW, boxH, boxR);
-    x.fill();
-  } else {
-    x.fillRect(boxX, boxY, boxW, boxH);
-  }
-
-  var qrSize = 250;
-  var qrX = boxX + 45;
-  var qrY = boxY + 45;
-
-  if (window.QRious) {
-    try {
-      var qr = new QRious({
-        value: SITE_SHARE_URL,
-        size: qrSize,
-        level: 'M'
-      });
-      x.drawImage(qr.canvas, qrX, qrY, qrSize, qrSize);
-    } catch(e) {}
-  }
-
-  var textStartX = qrX + qrSize + 40;
-  x.textAlign = "left";
-  
-  x.fillStyle = "#2f4a3c";
-  x.font = "800 34px " + FONT;
-  x.fillText("📷 카메라로 스캔하세요", textStartX, boxY + 95);
-
-  x.fillStyle = "#111111";
-  x.font = "900 48px " + FONT;
-  x.fillText("내 가게 순위 무료 진단", textStartX, boxY + 168);
-
-  x.fillStyle = "#666666";
-  x.font = "600 32px " + FONT;
-  x.fillText("1분 만에 실시간 등수 확인", textStartX, boxY + 230);
-
-  x.fillStyle = "#1d4ed8";
-  x.font = "700 30px " + FONT;
-  x.fillText("place.bacommu.com", textStartX, boxY + 285);
-
-  // 7) 하단 에이전시 브랜딩
-  x.textAlign = "center";
-  x.fillStyle = "#ffffff";
-  x.globalAlpha = 0.75;
-  x.font = "600 32px " + FONT;
-  x.fillText("비에이커뮤니케이션 | 네이버 플레이스 정밀 분석 센터", W / 2, 1780);
-  x.globalAlpha = 1;
-
-  c.toBlob(cb, "image/png");
-}
-
-var cardBlob = null;
-function prepCard() {
-  cardBlob = null;
-  makeCard(function(b) {
-    if (!b) return;
-    cardBlob = b;
-  });
-}
-
-// 이미지 직접 다운로드 트리거 함수 (공유창 X, 기기 자동 다운로드 O)
-function downloadCardImage() {
-  if (!cardBlob) {
-    toast("이미지 만드는 중이에요. 1초 뒤 다시 눌러주세요 😊");
-    prepCard();
-    return;
-  }
-
-  // 모바일/PC 모두 파일로 직접 다운로드 실행
-  var a = document.createElement("a");
-  var objectUrl = URL.createObjectURL(cardBlob);
-  a.href = objectUrl;
-  a.download = "랭크노트_매장성적표.png";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  // 모달 내 미리보기 이미지 노출 (길게 눌러 저장 대비)
-  var img = $("card-preview");
-  img.src = objectUrl;
-  img.classList.remove("hide");
-
-  toast("이미지가 갤러리/다운로드 폴더에 저장되었어요! 📷");
-}
-
-// 5. 이미지 저장 버튼 클릭 시 공유창을 띄우지 않고 직접 다운로드
-$("share-image").onclick = function() {
-  downloadCardImage();
+// 4. 링크 복사
+$("share-to-link").onclick = function() {
+  copyText(shareUrl(), "진단기 링크가 클립보드에 복사되었어요!");
+  closeShareModal();
 };
 
 var ut = new URLSearchParams(location.search).get("type");
