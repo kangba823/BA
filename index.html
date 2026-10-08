@@ -11,7 +11,8 @@
   <link rel="canonical" href="https://place.bacommu.com">
   <script defer src="/_vercel/insights/script.js"></script>
 
-  <!-- SNS / 카카오톡 공유 최적화 메타태그 (Open Graph) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:site_name" content="랭크노트 by 비에이커뮤니케이션">
@@ -22,7 +23,6 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
-  <!-- 네이버 검색 로봇용 JSON-LD 구조화 데이터 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -417,7 +417,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
 .hide { display: none !important; }
 
 /* -----------------------------------------------------------
-   공유 모달 & 미리보기 카드 (가운데 정렬 완벽 대응)
+   공유 모달 & 바텀시트
 ----------------------------------------------------------- */
 .modal-overlay {
   position: fixed;
@@ -429,7 +429,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
   height: 100vh;
   background: rgba(0, 0, 0, 0.65);
   display: flex;
-  align-items: flex-end; /* 모바일: 바텀시트 */
+  align-items: flex-end;
   justify-content: center;
   z-index: 2000;
   opacity: 0;
@@ -439,7 +439,7 @@ label.q span { font-size: 15px; line-height: 1.5; }
 }
 @media (min-width: 600px) {
   .modal-overlay {
-    align-items: center; /* PC: 화면 정중앙 팝업 */
+    align-items: center;
     padding: 20px;
   }
 }
@@ -577,7 +577,6 @@ footer {
 <body>
 
 <main>
-  <!-- STEP 1: 업종 선택 -->
   <div id="s1">
     <div>
       <span class="social-proof">📊 전국 <strong>1,200+</strong>개 매장 진단 완료</span>
@@ -586,7 +585,6 @@ footer {
     <h1>내 매장 네이버 플레이스,<br>지금 몇 점일까요?</h1>
     <p>2분 체크로 우리 매장 지도 점수와 <strong>지금 당장 바꿔야 할 핵심 과제 3가지</strong>를 확인하세요. 로그인 없이 즉시 확인 가능합니다.</p>
     
-    <!-- 실시간 순위 조회 입력기 -->
     <div class="card" style="border: 1.5px solid var(--pt);">
       <h2 style="margin-bottom:4px;">🔍 실시간 플레이스 순위 자동 분석</h2>
       <p style="font-size:13px; margin-bottom:8px;">네이버 플레이스에서 [공유 ➔ URL 복사]한 링크(naver.me)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
@@ -601,27 +599,22 @@ footer {
         ⚡ 네이버 지도 실시간 검색 순위를 스캔하고 있습니다...
       </div>
       
-      <!-- 동적 결과 카드 -->
       <div id="rank-result" class="hide" style="margin-top:14px; padding:16px; border-radius:12px; background:var(--bg); border:1px solid var(--line); text-align:center;">
         <div id="rank-content-wrap">
           <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
           <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
           
-          <!-- 숫자 롤링 전광판 -->
           <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
             <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
             <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
           </div>
           
-          <!-- 맞춤 상태 코멘트 -->
           <div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
           
-          <!-- 자가진단 유도 CTA 버튼 -->
           <button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">
             👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
           </button>
 
-          <!-- 순위 공유하기 버튼 -->
           <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:14px; font-weight:700; margin:0; border-style:solid; background:var(--card);">
             📲 순위 공유하기
           </button>
@@ -629,7 +622,6 @@ footer {
       </div>
     </div>
 
-    <!-- 업종 선택 카드 -->
     <div class="card" id="industry-card">
       <h2>진단할 업종을 선택하세요</h2>
       <button class="btn" data-t="food">🍽️ 식당 · 카페 · 디저트</button>
@@ -641,7 +633,6 @@ footer {
     <small class="guide-text" style="color:var(--sub); display:block; font-size:13px;">※ 병·의원 등 의료기관 및 의료법 규제 업종은 진단 대상에서 제외됩니다.</small>
   </div>
 
-  <!-- STEP 2: 자가점검 체크리스트 (20문항) -->
   <div id="s2" class="hide">
     <button class="btn sub-line" id="back" type="button" style="min-height:40px;margin:0 0 10px">← 업종 다시 선택</button>
     <div class="brand-badge" id="b-sub">자가진단 진행 중</div>
@@ -657,9 +648,7 @@ footer {
     <button class="btn pri" id="go">내 점수 및 진단 결과 보기 →</button>
   </div>
 
-  <!-- STEP 3: 진단 결과 및 리드 전환 동선 -->
   <div id="s3" class="hide">
-    <!-- 캡처 권장 안내 배너 -->
     <div class="capture-notice">
       📸 현재 진단 결과를 캡처해 두시면, 1:1 상담 시 훨씬 빠르고 정확한 맞춤 진단이 가능합니다.
     </div>
@@ -671,14 +660,12 @@ footer {
       <div class="witty-comment" id="witty"></div>
     </div>
 
-    <!-- 우선순위 과제 -->
     <div class="card">
       <h2>우선순위 개선 과제 3가지</h2>
       <p style="font-size:14px;">검색 노출 순위와 예약 전환에 직결되는 가장 시급한 보완 항목입니다.</p>
       <div id="todo"></div>
     </div>
 
-    <!-- 1등 매장 vs 내 매장 비교표 -->
     <div class="card">
       <h2>🏆 동네 상위 1~3위 매장 vs 내 매장 비교</h2>
       <p style="font-size:13px;">우리 동네 1~3위 매장이 손님을 독점하는 핵심 차이입니다.</p>
@@ -715,7 +702,6 @@ footer {
       </table>
     </div>
 
-    <!-- 매출 누수 계산기 카드 (100점 미만 시에만 표시) -->
     <div class="card" id="loss-card">
       <h2>📉 월 예상 고객·매출 누수 계산기</h2>
       <p style="font-size:13px;">플레이스 세팅 미흡으로 인근 상위 경쟁 매장에 빼앗기고 있는 월간 예상 손실액입니다.</p>
@@ -738,7 +724,6 @@ footer {
       </div>
     </div>
 
-    <!-- 100점 만점 전용 칭찬 카드 (100점 달성 시에만 표시) -->
     <div class="card hide" id="praise-card">
       <div class="praise-box">
         <h3>👑 고객 누수 0원! 완벽하게 방어 중입니다</h3>
@@ -752,7 +737,6 @@ footer {
       </div>
     </div>
 
-    <!-- 세팅 Before & After 쇼케이스 -->
     <div class="card">
       <h2>✨ 세팅 작업 전후 (Before & After)</h2>
       <div class="ba-grid">
@@ -773,11 +757,9 @@ footer {
       </div>
     </div>
 
-    <!-- 리드 전환 카드 -->
     <div class="card">
       <h2>전문가 1:1 정밀 분석 리포트 신청</h2>
       
-      <!-- PDF 증정 배너 -->
       <div class="gift-banner">
         <strong>🎁 신청자 전원 100% 무료 혜택</strong>
         [2026 네이버 플레이스 상위노출 7가지 비밀 공식 (PDF 요약본)]을 비용 없이 함께 발송해 드립니다.
@@ -785,12 +767,10 @@ footer {
 
       <p>매장명과 플레이스 링크를 남겨주시면, 인근 경쟁 매장 분석 및 노출 개선 키워드가 담긴 분석 리포트 요약본을 <strong>카카오톡 또는 문자로 먼저 발송</strong>해 드립니다. (상담 비용은 전혀 발생하지 않습니다)</p>
       
-      <!-- 네이버 폼 링크 -->
       <a class="btn pri" id="form-link" href="https://naver.me/G0pu2btc" target="_blank" rel="noopener">
         📄 1:1 무료 정밀 진단서 신청하기
       </a>
       
-      <!-- 카카오톡 채널 링크 -->
       <a class="btn kakao" id="kakao-link" href="https://pf.kakao.com/_xhGxhxib/chat" target="_blank" rel="noopener">
         💬 카카오톡으로 실시간 빠른 문의
       </a>
@@ -806,9 +786,6 @@ footer {
   </div>
 </main>
 
-<!-- -----------------------------------------------------------
-     공유 전용 미리보기 & 멀티 채널 모달 (가운데 정렬 완벽 대응)
------------------------------------------------------------ -->
 <div id="share-modal" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-header">
@@ -816,44 +793,37 @@ footer {
       <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
     </div>
 
-    <!-- 공유 미리보기 카드 -->
     <div class="share-preview-box">
       <span class="share-preview-badge">전송 문구 미리보기</span>
       <div class="share-preview-content" id="modal-preview-text"></div>
     </div>
 
-    <!-- 4대 공유 채널 버튼 그리드 -->
     <div class="share-grid">
-      <!-- 1. 카카오톡 -->
       <div class="share-item-btn" id="share-to-kakao">
         <div class="share-icon-circle share-icon-kakao">💬</div>
         <span class="share-item-label">카카오톡</span>
       </div>
 
-      <!-- 2. 스레드 (Threads) -->
       <div class="share-item-btn" id="share-to-threads">
         <div class="share-icon-circle share-icon-threads">@</div>
         <span class="share-item-label">스레드</span>
       </div>
 
-      <!-- 3. 이미지 즉시 저장 -->
       <div class="share-item-btn" id="share-image">
         <div class="share-icon-circle share-icon-img">🖼️</div>
         <span class="share-item-label">이미지 저장</span>
       </div>
 
-      <!-- 4. 링크 복사 -->
       <div class="share-item-btn" id="share-to-link">
         <div class="share-icon-circle share-icon-link">🔗</div>
         <span class="share-item-label">링크 복사</span>
       </div>
     </div>
 
-    <!-- 이미지 미리보기 영역 -->
     <img id="card-preview" class="hide" alt="성적표 공유 이미지" style="width:100%; border-radius:12px; margin-top:10px; border:1px solid var(--line); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
     
     <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:12px;">
-      [이미지 저장]을 누르시면 인스타/단톡방용 성적표 카드가 기기에 자동 저장됩니다.
+      💡 TIP: 이미지를 저장한 뒤 단톡방이나 인스타에 링크와 함께 공유해 보세요.<br>(이미지 속 QR코드로 다른 사장님들도 즉시 무료 조회가 가능합니다)
     </small>
   </div>
 </div>
@@ -956,7 +926,7 @@ function toast(m) {
   var e = $("toast");
   e.textContent = m;
   e.classList.add("show");
-  setTimeout(function() { e.classList.remove("show"); }, 2600);
+  setTimeout(function() { e.classList.remove("show"); }, 2800);
 }
 
 function copyText(t, msg) {
@@ -1176,7 +1146,7 @@ $("btn-rank-check").onclick = function() {
         "<div style='font-size:13px; color:var(--ink);'>" +
           "1. <strong>네이버 지도 앱</strong>에서 내 매장을 검색합니다.<br>" +
           "2. 매장 화면 우측 상단 <strong>[공유(아이콘)]</strong>을 터치합니다.<br>" +
-          "3. <strong>[URL 복사]</strong>를 누른 뒤 여기에 붙여넣어 주세요!" +
+          "3. <strong>https://namu.wiki/w/%EB%B3%B5%EC%82%AC</strong>를 누른 뒤 여기에 붙여넣어 주세요!" +
         "</div>" +
       "</div>";
     return;
@@ -1312,7 +1282,7 @@ $("share-to-link").onclick = function() {
   closeShareModal();
 };
 
-// 4. 고화질 성적표 카드 캔버스 생성 (1080x1920)
+// 4. 고화질 성적표 카드 캔버스 생성 (QR코드 탑재 1080x1920)
 function makeCard(cb) {
   var W = 1080, H = 1920, c = document.createElement("canvas");
   c.width = W; c.height = H;
@@ -1337,41 +1307,89 @@ function makeCard(cb) {
     label = "우리 가게 플레이스 순위"; big = "몇 위?"; msg = "🔍 링크만 넣으면 1분 컷";
   }
 
-  // 배경 그라데이션
+  // 1) 배경 그라데이션
   var g = x.createLinearGradient(0, 0, 0, H);
   g.addColorStop(0, top); g.addColorStop(1, bot);
   x.fillStyle = g; x.fillRect(0, 0, W, H);
 
-  // 브랜드 텍스트
+  // 2) 브랜드 뱃지
   x.textAlign = "center"; x.fillStyle = "#ffffff";
-  x.globalAlpha = 0.85; x.font = "700 48px " + FONT; x.fillText("랭크노트 RANK NOTE", W / 2, 240);
+  x.globalAlpha = 0.85; x.font = "700 48px " + FONT; x.fillText("랭크노트 RANK NOTE", W / 2, 230);
 
-  // 타이틀
-  x.globalAlpha = 1; x.font = "800 60px " + FONT; x.fillText(label, W / 2, 600);
+  // 3) 성적 타이틀
+  x.globalAlpha = 1; x.font = "800 60px " + FONT; x.fillText(label, W / 2, 560);
   if (sub) {
-    var fs = 46; x.font = "600 " + fs + "px " + FONT;
+    var fs = 44; x.font = "600 " + fs + "px " + FONT;
     while (x.measureText(sub).width > W - 140 && fs > 26) { fs -= 2; x.font = "600 " + fs + "px " + FONT; }
-    x.globalAlpha = 0.85; x.fillText(sub, W / 2, 680); x.globalAlpha = 1;
+    x.globalAlpha = 0.85; x.fillText(sub, W / 2, 640); x.globalAlpha = 1;
   }
 
-  // 중앙 점수/등수
-  var bs = 320; x.font = "900 " + bs + "px " + FONT;
+  // 4) 점수/등수 메인 텍스트
+  var bs = 300; x.font = "900 " + bs + "px " + FONT;
   while (x.measureText(big).width > W - 140 && bs > 120) { bs -= 10; x.font = "900 " + bs + "px " + FONT; }
-  x.fillText(big, W / 2, 1040);
+  x.fillText(big, W / 2, 980);
 
-  // 메시지
-  x.font = "700 56px " + FONT; x.fillText(msg, W / 2, 1200);
+  // 5) 인사이트 한 줄 평
+  x.font = "700 52px " + FONT; x.fillText(msg, W / 2, 1140);
 
-  // 하단 CTA 뱃지
-  x.fillStyle = "#fee500";
+  // 6) QR 코드 + 카메라 스캔 안내 카드 (화이트 박스)
+  var boxX = 70, boxY = 1320, boxW = 940, boxH = 340, boxR = 28;
+  x.fillStyle = "#ffffff";
   x.beginPath();
-  if (x.roundRect) { x.roundRect(140, 1420, W - 280, 140, 24); x.fill(); }
-  else { x.fillRect(140, 1420, W - 280, 140); }
-  x.fillStyle = "#191919"; x.font = "800 50px " + FONT; x.fillText("내 가게 순위 무료 조회 👉", W / 2, 1508);
+  if (x.roundRect) {
+    x.roundRect(boxX, boxY, boxW, boxH, boxR);
+    x.fill();
+  } else {
+    x.fillRect(boxX, boxY, boxW, boxH);
+  }
 
-  // 하단 도메인 안내
-  x.fillStyle = "#ffffff"; x.globalAlpha = 0.9; x.font = "700 44px " + FONT; x.fillText("place.bacommu.com", W / 2, 1690);
-  x.globalAlpha = 0.6; x.font = "500 32px " + FONT; x.fillText("비에이커뮤니케이션", W / 2, 1770);
+  // 실제 QR 코드 렌더링 (250x250)
+  var qrSize = 250;
+  var qrX = boxX + 45;
+  var qrY = boxY + 45;
+
+  if (window.QRious) {
+    try {
+      var qr = new QRious({
+        value: SITE_SHARE_URL,
+        size: qrSize,
+        level: 'M'
+      });
+      x.drawImage(qr.canvas, qrX, qrY, qrSize, qrSize);
+    } catch(e) {}
+  }
+
+  // QR 코드 옆 텍스트 안내 영역
+  var textStartX = qrX + qrSize + 40;
+  x.textAlign = "left";
+  
+  // 뱃지 타이틀
+  x.fillStyle = "#2f4a3c";
+  x.font = "800 34px " + FONT;
+  x.fillText("📷 카메라로 스캔하세요", textStartX, boxY + 95);
+
+  // 메인 카피
+  x.fillStyle = "#111111";
+  x.font = "900 48px " + FONT;
+  x.fillText("내 가게 순위 무료 진단", textStartX, boxY + 168);
+
+  // 서브 카피
+  x.fillStyle = "#666666";
+  x.font = "600 32px " + FONT;
+  x.fillText("1분 만에 실시간 등수 확인", textStartX, boxY + 230);
+
+  // 링크 도메인
+  x.fillStyle = "#1d4ed8";
+  x.font = "700 30px " + FONT;
+  x.fillText("place.bacommu.com", textStartX, boxY + 285);
+
+  // 7) 하단 에이전시 브랜딩
+  x.textAlign = "center";
+  x.fillStyle = "#ffffff";
+  x.globalAlpha = 0.75;
+  x.font = "600 32px " + FONT;
+  x.fillText("비에이커뮤니케이션 | 네이버 플레이스 정밀 분석 센터", W / 2, 1780);
+  x.globalAlpha = 1;
 
   c.toBlob(cb, "image/png");
 }
@@ -1423,7 +1441,7 @@ function downloadCardImage() {
     img.src = objectUrl;
     img.classList.remove("hide");
 
-    toast("이미지가 갤러리/다운로드 폴더에 자동 저장되었어요! 📷");
+    toast("이미지가 저장되었어요! 단톡방이나 인스타에 링크와 함께 공유해 보세요 📷");
   }
 }
 
