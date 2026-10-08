@@ -546,6 +546,10 @@ label.q span { font-size: 15px; line-height: 1.5; }
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
   color: #ffffff;
 }
+.share-icon-img {
+  background: var(--pt);
+  color: #ffffff;
+}
 .share-icon-link {
   background: #475569;
   color: #ffffff;
@@ -815,8 +819,6 @@ footer {
       <div class="share-preview-content" id="modal-preview-text"></div>
     </div>
 
-    <button type="button" class="btn pri" id="share-image" style="margin:0 0 14px;">🖼️ 결과 이미지로 공유 (인스타 스토리용)</button>
-
     <!-- 4대 공유 채널 버튼 그리드 -->
     <div class="share-grid">
       <!-- 1. 카카오톡 -->
@@ -831,18 +833,11 @@ footer {
         <span class="share-item-label">스레드</span>
       </div>
 
-      <!-- 3. 인스타그램 -->
-      <div class="share-item-btn" id="share-to-insta">
-        <div class="share-icon-circle share-icon-insta">📷</div>
-        <span class="share-item-label">인스타그램</span>
+      <!-- 3. 이미지 저장/공유 -->
+      <div class="share-item-btn" id="share-image">
+        <div class="share-icon-circle share-icon-img">🖼️</div>
+        <span class="share-item-label">이미지</span>
       </div>
-
-      <!-- 4. 링크 복사 -->
-      <div class="share-item-btn" id="share-to-link">
-        <div class="share-icon-circle share-icon-link">🔗</div>
-        <span class="share-item-label">링크 복사</span>
-      </div>
-    </div>
 
     <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:8px;">
       채널을 터치하시면 문구가 자동 복사되며 해당 앱/웹으로 즉시 연결됩니다.
@@ -1249,7 +1244,7 @@ $("btn-rank-check").onclick = function() {
 var shareCtx = { kind: "site" };
 
 function shareUrl(src) {
-  return SITE_SHARE_URL + "?utm_source=" + src + "&utm_medium=share";
+  return SITE_SHARE_URL;
 }
 
 function buildShareMessage(src) {
@@ -1285,11 +1280,6 @@ $("share-to-kakao").onclick = function() {
 };
 $("share-to-threads").onclick = function() {
   window.open("https://www.threads.com/intent/post?text=" + encodeURIComponent(buildShareMessage("threads")), "_blank", "noopener");
-  closeShareModal();
-};
-$("share-to-insta").onclick = function() {
-  copyText(buildShareMessage("insta"), "문구 복사 완료! 스토리 텍스트(Aa)에 붙여넣으세요 📷");
-  window.open("https://www.instagram.com/", "_blank", "noopener");
   closeShareModal();
 };
 $("share-to-link").onclick = function() {
