@@ -395,8 +395,12 @@ label.q span { font-size: 15px; line-height: 1.5; }
 #toast {
   position: fixed;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  text-align: center;
   background: #111;
   color: #fff;
   padding: 10px 20px;
@@ -839,6 +843,7 @@ footer {
         <span class="share-item-label">이미지</span>
       </div>
 
+    <img id="card-preview" class="hide" alt="공유 이미지" style="width:100%; border-radius:12px; margin-top:6px;">
     <small style="font-size:12px; color:var(--sub); display:block; text-align:center; margin-top:8px;">
       채널을 터치하시면 문구가 자동 복사되며 해당 앱/웹으로 즉시 연결됩니다.
     </small>
@@ -1261,6 +1266,8 @@ function buildShareMessage(src) {
 }
 
 function openShareModal() {
+  $("card-preview").classList.add("hide");
+  prepCard();
   $("modal-preview-text").textContent = buildShareMessage("preview");
   $("share-modal").classList.add("active");
 }
@@ -1333,20 +1340,31 @@ function makeCard(cb) {
   c.toBlob(cb, "image/png");
 }
 
-$("share-image").onclick = function() {
-  makeCard(function(blob) {
-    if (!blob) { toast("이미지 생성에 실패했어요 😢"); return; }
-    var file = new File([blob], "ranknote.png", { type: "image/png" });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], text: buildShareMessage("image") }).then(closeShareModal).catch(function() {});
-    } else {
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "ranknote.png";
-      document.body.appendChild(a); a.click(); a.remove();
-      toast("이미지 저장 완료! 인스타 스토리에 올려보세요 📷");
-      closeShareModal();
-    }
+var cardBlob = null, cardFile = null;
+function prepCard() {
+  cardBlob = null; cardFile = null;
+  makeCard(function(b) {
+    if (!b) return;
+    cardBlob = b;
+    try { cardFile = new File([b], "ranknote.png", { type: "image/png" }); } catch (e) {}
   });
+}
+function showCardImage() {
+  var img = $("card-preview");
+  img.src = URL.createObjectURL(cardBlob);
+  img.classList.remove("hide");
+  toast("이미지를 꾹 눌러 '사진에 저장'을 선택하세요 📷");
+}
+$("share-image").onclick = function() {
+  if (!cardBlob) { toast("이미지 만드는 중이에요, 잠시 후 다시 눌러주세요 😊"); return; }
+  if (cardFile && navigator.canShare && navigator.canShare({ files: [cardFile] })) {
+    navigator.share({ files: [cardFile] }).then(closeShareModal).catch(function(e) {
+      if (e && e.name === "AbortError") return;
+      showCardImage();
+    });
+  } else {
+    showCardImage();
+  }
 };
 
 var ut = new URLSearchParams(location.search).get("type");
