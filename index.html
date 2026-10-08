@@ -405,11 +405,157 @@ label.q span { font-size: 15px; line-height: 1.5; }
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  z-index: 1001;
+  z-index: 2001;
 }
 #toast.show { opacity: 1; }
 .counter { text-align: center; font-size: 14px; color: var(--sub); margin: 8px 0; font-weight: 600; }
 .hide { display: none !important; }
+
+/* -----------------------------------------------------------
+   공유 모달 & 미리보기 카드 스타일
+----------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-sheet {
+  background: var(--card);
+  width: 100%;
+  max-width: 560px;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-overlay.active .modal-sheet {
+  transform: translateY(0);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.modal-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--ink);
+}
+.modal-close-btn {
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--sub);
+  padding: 4px 8px;
+}
+
+/* 공유 미리보기 박스 */
+.share-preview-box {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+.share-preview-badge {
+  display: inline-block;
+  background: rgba(47, 74, 60, 0.1);
+  color: var(--pt);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+.share-preview-content {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.5;
+  white-space: pre-line;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+/* 공유 버튼 그리드 (4개) */
+.share-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.share-item-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 6px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+  user-select: none;
+}
+.share-item-btn:active {
+  transform: scale(0.96);
+}
+.share-icon-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+.share-icon-kakao {
+  background: var(--kakao);
+  color: #191919;
+}
+.share-icon-threads {
+  background: #000000;
+  color: #ffffff;
+  font-family: -apple-system, sans-serif;
+  font-size: 22px;
+}
+.share-icon-insta {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  color: #ffffff;
+}
+.share-icon-link {
+  background: #475569;
+  color: #ffffff;
+}
+.share-item-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
 
 footer {
   max-width: 560px;
@@ -437,7 +583,7 @@ footer {
     <!-- 실시간 순위 조회 입력기 -->
     <div class="card" style="border: 1.5px solid var(--pt);">
       <h2 style="margin-bottom:4px;">🔍 실시간 플레이스 순위 자동 분석</h2>
-      <p style="font-size:13px; margin-bottom:8px;">네이버 플레이스 에서 [공유 ➔ URL 복사]한 링크(naver.me)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
+      <p style="font-size:13px; margin-bottom:8px;">네이버 플레이스에서 [공유 ➔ URL 복사]한 링크(naver.me)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
       
       <div class="rank-search-box">
         <input type="text" id="rank-url-input" class="rank-input" placeholder="네이버 지도에서 복사한 링크 붙여넣기 [https://naver.me/]">
@@ -451,22 +597,29 @@ footer {
       
       <!-- 동적 결과 카드 -->
       <div id="rank-result" class="hide" style="margin-top:14px; padding:16px; border-radius:12px; background:var(--bg); border:1px solid var(--line); text-align:center;">
-        <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
-        <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
-        
-        <!-- 숫자 롤링 전광판 -->
-        <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
-          <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
-          <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
+        <div id="rank-content-wrap">
+          <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
+          <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
+          
+          <!-- 숫자 롤링 전광판 -->
+          <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
+            <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
+            <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
+          </div>
+          
+          <!-- 맞춤 상태 코멘트 -->
+          <div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
+          
+          <!-- 자가진단 유도 CTA 버튼 -->
+          <button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">
+            👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
+          </button>
+
+          <!-- 공유 모달 오픈 버튼 -->
+          <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:13px; margin:0; border-style:solid; background:var(--card);">
+            📲 순위 공유하기 (카톡 · 스레드 · 인스타 · 링크)
+          </button>
         </div>
-        
-        <!-- 맞춤 상태 코멘트 -->
-        <div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
-        
-        <!-- 자가진단 유도 CTA 버튼 -->
-        <button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0;">
-          👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
-        </button>
       </div>
     </div>
 
@@ -647,6 +800,61 @@ footer {
   </div>
 </main>
 
+<!-- -----------------------------------------------------------
+     공유 전용 미리보기 & 멀티 채널 바텀시트 모달
+----------------------------------------------------------- -->
+<div id="share-modal" class="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3 class="modal-title">📲 공유 미리보기 및 채널 선택</h3>
+      <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
+    </div>
+
+    <!-- 상대방 화면에 어떻게 보이는지 미리보기 카드 -->
+    <div class="share-preview-box">
+      <span class="share-preview-badge">메시지 전송 미리보기</span>
+      <div class="share-preview-content" id="modal-preview-text">
+        [공유] 우리 동네 1등 매장 네이버 플레이스 순위 까보는 사이트 🔍
+        
+        길 건너 잘나가는 매장 링크 넣으면 실시간 모바일 순위랑 어떤 키워드로 노출되는지 바로 뜹니다.
+        
+        👉 실시간 순위 무료 조회: https://place.bacommu.com
+      </div>
+    </div>
+
+    <!-- 4대 공유 채널 버튼 그리드 -->
+    <div class="share-grid">
+      <!-- 1. 카카오톡 -->
+      <div class="share-item-btn" id="share-to-kakao">
+        <div class="share-icon-circle share-icon-kakao">💬</div>
+        <span class="share-item-label">카카오톡</span>
+      </div>
+
+      <!-- 2. 스레드 (Threads) -->
+      <div class="share-item-btn" id="share-to-threads">
+        <div class="share-icon-circle share-icon-threads">@</div>
+        <span class="share-item-label">스레드</span>
+      </div>
+
+      <!-- 3. 인스타그램 -->
+      <div class="share-item-btn" id="share-to-insta">
+        <div class="share-icon-circle share-icon-insta">📷</div>
+        <span class="share-item-label">인스타그램</span>
+      </div>
+
+      <!-- 4. 링크 복사 -->
+      <div class="share-item-btn" id="share-to-link">
+        <div class="share-icon-circle share-icon-link">🔗</div>
+        <span class="share-item-label">링크 복사</span>
+      </div>
+    </div>
+
+    <small style="font-size:12px; color:var(--sub); display:block; text-align:center;">
+      원하는 채널을 선택하시면 문구와 링크가 즉시 연동됩니다.
+    </small>
+  </div>
+</div>
+
 <footer>
   비에이커뮤니케이션 (BAcommunication)<br>
   © 2017 BAcommunication. All rights reserved.
@@ -657,6 +865,14 @@ footer {
 <script>
 var NAVER_FORM_URL = "https://naver.me/G0pu2btc";
 var KAKAO_URL = "https://pf.kakao.com/_xhGxhxib/chat";
+var SITE_SHARE_URL = "https://place.bacommu.com";
+
+// 현재 조회된 매장 데이터 저장용 객체
+var lastAnalyzedData = {
+  name: "우리 매장",
+  keyword: "지역 맛집",
+  rank: "순위 확인"
+};
 
 var C = [
   { text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 수치가 개선의 명확한 기준이 됩니다." },
@@ -743,7 +959,7 @@ function toast(m) {
   var e = $("toast");
   e.textContent = m;
   e.classList.add("show");
-  setTimeout(function() { e.classList.remove("show"); }, 2000);
+  setTimeout(function() { e.classList.remove("show"); }, 2400);
 }
 
 function copyText(t, msg) {
@@ -858,26 +1074,24 @@ $("go").onclick = function() {
 
 $("again").onclick = function() { showStep(1); };
 $("btn-share").onclick = function() {
-  var shareUrl = window.location.href.split('?')[0] + "?type=" + currentTypeKey;
+  var shareUrl = SITE_SHARE_URL;
   copyText(shareUrl, "진단기 링크가 복사되었습니다!");
 };
 
 // -------------------------------------------------------------
 // [실시간 순위 분석 정밀 3.8초 슬롯머신 감속 롤링 애니메이션]
 // -------------------------------------------------------------
-
 function runRankRolling(targetRankNum, callback) {
   var el = $("res-rolling-rank");
   var statusEl = $("res-scan-status");
-  var totalDuration = 3800; // 약 3.8초 긴장감 지속
+  var totalDuration = 3800;
   var startTime = Date.now();
 
   function tick() {
     var elapsed = Date.now() - startTime;
-    var progress = elapsed / totalDuration; // 0.0 ~ 1.0
+    var progress = elapsed / totalDuration;
 
     if (progress >= 1) {
-      // 최종 종료 시점
       statusEl.textContent = "네이버 지도 검색 노출 순위 확정";
       if (targetRankNum) {
         el.textContent = targetRankNum + "위";
@@ -891,27 +1105,24 @@ function runRankRolling(targetRankNum, callback) {
     var nextDelay = 60;
 
     if (progress < 0.5) {
-      // 1단계 (0 ~ 1.9초): 전국 데이터 광속 스캔
       statusEl.textContent = "네이버 모바일 검색 데이터 전수 스캔 중...";
       var rand = Math.floor(Math.random() * 95) + 1;
       el.textContent = rand + "위";
       nextDelay = 65;
     } else if (progress < 0.75) {
-      // 2단계 (1.9 ~ 2.85초): 매장 순위 근처로 좁혀지며 감속
       statusEl.textContent = "타겟 키워드 랭킹 정밀 대조 중...";
       var base = targetRankNum || 80;
       var offset = Math.floor(Math.random() * 7) + 1;
       var near = Math.max(1, base + (Math.random() > 0.5 ? offset : -offset));
       el.textContent = near + "위";
-      nextDelay = 120 + Math.floor((progress - 0.5) * 450); // 점점 묵직해짐
+      nextDelay = 120 + Math.floor((progress - 0.5) * 450);
     } else {
-      // 3단계 (2.85 ~ 3.8초): 목표 순위 바로 앞에서 숨 막히는 덜컹거림
       statusEl.textContent = "최종 노출 순위 산출 중...";
       var finalBase = targetRankNum || 98;
       var diff = Math.random() > 0.5 ? 1 : 2;
       var suspenseNum = Math.max(1, finalBase + (Math.random() > 0.5 ? diff : -diff));
       el.textContent = suspenseNum + "위";
-      nextDelay = 280 + Math.floor((progress - 0.75) * 600); // 틱... 틱... 덜컹거림
+      nextDelay = 280 + Math.floor((progress - 0.75) * 600);
     }
 
     setTimeout(tick, nextDelay);
@@ -920,7 +1131,6 @@ function runRankRolling(targetRankNum, callback) {
   tick();
 }
 
-// 순위별 1줄 팩트 코멘트 반환
 function getRankInsight(rankNum) {
   if (!rankNum || rankNum > 30) {
     return {
@@ -956,30 +1166,68 @@ $("btn-rank-check").onclick = function() {
     alert("플레이스 링크를 입력해 주세요.");
     return;
   }
-  
+
+  var resBox = $("rank-result");
+
+  var isNotUrl = !inputVal.startsWith("http://") && !inputVal.startsWith("https://");
+  var hasKoreanAddress = /[시군구동읍면로길]/.test(inputVal);
+
+  if (isNotUrl || hasKoreanAddress) {
+    $("rank-loading").classList.add("hide");
+    resBox.classList.remove("hide");
+    resBox.innerHTML = 
+      "<div style='text-align:left; background:var(--card); border:1.5px solid var(--warn); padding:14px 16px; border-radius:10px; line-height:1.5;'>" +
+        "<strong style='color:var(--warn); font-size:14px; display:block; margin-bottom:6px;'>⚠️ 도로명 주소가 아닌 '네이버 지도 링크'가 필요해요!</strong>" +
+        "<div style='font-size:13px; color:var(--ink);'>" +
+          "1. <strong>네이버 지도 앱</strong>에서 내 매장을 검색합니다.<br>" +
+          "2. 매장 화면 우측 상단 <strong>[공유(아이콘)]</strong>을 터치합니다.<br>" +
+          "3. <strong>[URL 복사]</strong>를 누른 뒤 여기에 붙여넣어 주세요!" +
+        "</div>" +
+      "</div>";
+    return;
+  }
+
+  resBox.innerHTML = 
+    '<div id="rank-content-wrap">' +
+      '<div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>' +
+      '<div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>' +
+      '<div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">' +
+        '<span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>' +
+        '<div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>' +
+      '</div>' +
+      '<div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>' +
+      '<button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">' +
+        '👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓' +
+      '</button>' +
+      '<button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:13px; margin:0; border-style:solid; background:var(--card);">' +
+        '📲 순위 공유하기 (카톡 · 스레드 · 인스타 · 링크)' +
+      '</button>' +
+    '</div>';
+
   $("rank-loading").classList.remove("hide");
-  $("rank-result").classList.add("hide");
-  $("res-comment-box").classList.add("hide");
-  $("btn-to-diagnostic").classList.add("hide");
+  resBox.classList.add("hide");
 
   fetch("/api/rank?placeUrl=" + encodeURIComponent(inputVal) + "&keyword=" + encodeURIComponent($("rank-kw-input").value.trim()))
     .then(function(res) { return res.json(); })
     .then(function(data) {
       $("rank-loading").classList.add("hide");
-      var resBox = $("rank-result");
       resBox.classList.remove("hide");
       
       if (data.error) {
-        resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>URL링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
+        resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ " + data.error + "</span><br><small style='color:var(--sub);'>URL 링크가 정확한지 확인 후 다시 시도해 주세요.</small>";
         return;
       }
+
+      lastAnalyzedData = {
+        name: data.name,
+        keyword: data.keyword,
+        rank: data.rankNum ? data.rankNum + "위" : "100위 밖"
+      };
 
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + data.keyword + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
       
-      // 3.8초 슬롯머신 감속 롤링 시작
       runRankRolling(data.rankNum, function() {
-        // 숫자가 완전히 멈추면 코멘트와 2분 점검 버튼이 튀어나옴
         var insight = getRankInsight(data.rankNum);
         var commentEl = $("res-comment-box");
         commentEl.style.background = insight.bg;
@@ -988,22 +1236,94 @@ $("btn-rank-check").onclick = function() {
         commentEl.classList.remove("hide");
         
         $("btn-to-diagnostic").classList.remove("hide");
+        $("btn-share-rank").classList.remove("hide");
       });
       
-      // 원인 찾기 버튼 클릭 시 업종 선택 카드로 부드럽게 스크롤
       $("btn-to-diagnostic").onclick = function() {
         var targetSection = $("industry-card");
         if (targetSection) {
           targetSection.scrollIntoView({ behavior: "smooth", block: "center" });
         }
       };
+
+      // 순위 공유 버튼 클릭 ➔ 모달 열기
+      $("btn-share-rank").onclick = openShareModal;
     })
     .catch(function(err) {
       $("rank-loading").classList.add("hide");
-      var resBox = $("rank-result");
       resBox.classList.remove("hide");
       resBox.innerHTML = "<span style='color:var(--warn); font-weight:700;'>⚠️ 순위를 불러오지 못했어요.</span><br><small style='color:var(--sub);'>잠시 후 다시 시도하거나 아래 자가진단을 먼저 진행해 보세요.</small>";
     });
+};
+
+// -------------------------------------------------------------
+// [공유 모달 열기/닫기 및 4대 SNS 채널별 연동]
+// -------------------------------------------------------------
+function buildShareMessage() {
+  return "[공유] 우리 동네 1등 매장 네이버 플레이스 순위 까보는 사이트 🔍\n\n" +
+         "• 매장명: " + lastAnalyzedData.name + "\n" +
+         "• 검색 키워드: [" + lastAnalyzedData.keyword + "]\n" +
+         "• 실시간 순위: " + lastAnalyzedData.rank + "\n\n" +
+         "길 건너 잘나가는 매장 링크 넣으면 실시간 순위랑 노출 키워드가 바로 뜹니다.\n" +
+         "단톡방 사장님들도 인근 경쟁 매장 순위 한번 돌려보세요!\n\n" +
+         "👉 실시간 순위 무료 조회: " + SITE_SHARE_URL;
+}
+
+function openShareModal() {
+  var modal = $("share-modal");
+  $("modal-preview-text").textContent = buildShareMessage();
+  modal.classList.add("active");
+}
+
+function closeShareModal() {
+  $("share-modal").classList.remove("active");
+}
+
+$("btn-close-modal").onclick = closeShareModal;
+$("share-modal").onclick = function(e) {
+  if (e.target === $("share-modal")) closeShareModal();
+};
+
+// 1. 카카오톡 공유
+$("share-to-kakao").onclick = function() {
+  var msg = buildShareMessage();
+  if (navigator.share) {
+    navigator.share({
+      title: "랭크노트 - 네이버 플레이스 순위 진단",
+      text: msg,
+      url: SITE_SHARE_URL
+    }).then(closeShareModal).catch(function() {});
+  } else {
+    copyText(msg, "카톡 추천 문구가 복사되었습니다! 카톡 채팅방에 붙여넣으세요.");
+    setTimeout(function() {
+      window.location.href = "kakaotalk://";
+    }, 400);
+    closeShareModal();
+  }
+};
+
+// 2. 스레드 (Threads) 공유 (공식 intent 연동)
+$("share-to-threads").onclick = function() {
+  var msg = buildShareMessage();
+  var threadsUrl = "https://threads.net/intent/post?text=" + encodeURIComponent(msg);
+  window.open(threadsUrl, "_blank");
+  closeShareModal();
+};
+
+// 3. 인스타그램 (Instagram) 공유 (문구 복사 후 인스타 이동)
+$("share-to-insta").onclick = function() {
+  var msg = buildShareMessage();
+  copyText(msg, "추천 문구가 복사되었습니다! 인스타그램 피드/DM에 붙여넣으세요.");
+  setTimeout(function() {
+    window.open("https://www.instagram.com/", "_blank");
+  }, 400);
+  closeShareModal();
+};
+
+// 4. 링크만 단독 복사
+$("share-to-link").onclick = function() {
+  copyText(SITE_SHARE_URL, "진단기 링크가 복사되었습니다!");
+  closeShareModal();
 };
 
 var ut = new URLSearchParams(location.search).get("type");
