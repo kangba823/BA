@@ -173,12 +173,40 @@ p { margin: 0 0 14px; color: var(--sub); font-size: 15px; }
   font-size: 14px;
 }
 
+/* 체크리스트 그룹핑 스타일 */
+.q-group {
+  margin-bottom: 22px;
+}
+.q-group:last-child {
+  margin-bottom: 4px;
+}
+.q-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(47, 74, 60, 0.05);
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  border-left: 3px solid var(--pt);
+}
+.q-group-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--pt);
+}
+.q-group-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+}
+
 /* 체크리스트 항목 */
 label.q {
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  padding: 14px 8px;
+  padding: 13px 8px;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
   user-select: none;
@@ -417,17 +445,11 @@ label.q span { font-size: 15px; line-height: 1.5; }
 .counter { text-align: center; font-size: 14px; color: var(--sub); margin: 8px 0; font-weight: 600; }
 .hide { display: none !important; }
 
-/* -----------------------------------------------------------
-   공유 모달 & 바텀시트
------------------------------------------------------------ */
+/* 공유 모달 & 바텀시트 */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: flex-end;
@@ -495,7 +517,6 @@ label.q span { font-size: 15px; line-height: 1.5; }
   padding: 4px 8px;
 }
 
-/* 공유 미리보기 박스 */
 .share-preview-box {
   background: var(--bg);
   border: 1px solid var(--line);
@@ -525,7 +546,6 @@ label.q span { font-size: 15px; line-height: 1.5; }
   border: 1px solid var(--line);
 }
 
-/* 공유 채널 그리드 (4개) */
 .share-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -593,7 +613,7 @@ footer {
       <p style="font-size:13px; margin-bottom:8px;">네이버 플레이스에서 [공유 ➔ URL 복사]한 링크(naver.me)를 입력하시면 대표 키워드 순위와 최적화 상태를 분석합니다.</p>
       
       <div class="rank-search-box">
-        <input type="text" id="rank-url-input" class="rank-input" placeholder="링크 붙여넣기 [https://naver.me/]">
+        <input type="text" id="rank-url-input" class="rank-input" placeholder="네이버 지도에서 복사한 링크 붙여넣기 [https://naver.me/]">
         <button type="button" id="btn-rank-check" class="rank-btn">순위 분석</button>
       </div>
       <input type="text" id="rank-kw-input" class="rank-input" style="width:100%; margin-top:8px;" placeholder="검색 키워드 (선택) 예: 울산 남구 카페 — 비우면 자동 추정">
@@ -608,21 +628,17 @@ footer {
           <div style="font-size:13px; color:var(--sub); margin-bottom:4px;" id="res-store-name">매장명</div>
           <div style="font-size:14px; font-weight:700; color:var(--ink); margin-bottom:12px;" id="res-keyword">키워드</div>
           
-          <!-- 숫자 롤링 전광판 -->
           <div style="background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:12px;">
             <span style="font-size:12px; font-weight:700; color:var(--sub); display:block;" id="res-scan-status">네이버 지도 실시간 노출 순위</span>
             <div style="font-size:38px; font-weight:900; color:var(--pt); line-height:1.2; margin-top:4px;" id="res-rolling-rank">분석 중...</div>
           </div>
           
-          <!-- 맞춤 상태 코멘트 -->
           <div id="res-comment-box" class="hide" style="font-size:13px; font-weight:700; padding:10px 12px; border-radius:8px; line-height:1.4; margin-bottom:14px;"></div>
           
-          <!-- 자가진단 유도 CTA 버튼 -->
           <button type="button" id="btn-to-diagnostic" class="btn pri hide" style="min-height:46px; font-size:14px; margin:0 0 8px 0;">
             👉 내 매장 순위가 밀린 원인 찾기 (2분 점검) ↓
           </button>
 
-          <!-- 순위 공유하기 버튼 -->
           <button type="button" id="btn-share-rank" class="btn sub-line hide" style="min-height:42px; font-size:14px; font-weight:700; margin:0; border-style:solid; background:var(--card);">
             📲 순위 공유하기
           </button>
@@ -642,7 +658,7 @@ footer {
     <small class="guide-text" style="color:var(--sub); display:block; font-size:13px;">※ 병·의원 등 의료기관 및 의료법 규제 업종은 진단 대상에서 제외됩니다.</small>
   </div>
 
-  <!-- STEP 2: 자가점검 체크리스트 (20문항) -->
+  <!-- STEP 2: 자가점검 체크리스트 (20문항 그룹핑) -->
   <div id="s2" class="hide">
     <button class="btn sub-line" id="back" type="button" style="min-height:40px;margin:0 0 10px">← 업종 다시 선택</button>
     <div class="brand-badge" id="b-sub">자가진단 진행 중</div>
@@ -650,7 +666,7 @@ footer {
     <p>스마트폰으로 본인 매장의 <strong>네이버 플레이스(지도)</strong> 화면을 켜두고, 해당되는 항목을 빠짐없이 체크하세요.</p>
     
     <div style="margin-bottom:6px;">
-      <span style="font-size:13px; font-weight:700; color:var(--sub);">총 20개 점검 항목</span>
+      <span style="font-size:13px; font-weight:700; color:var(--sub);">총 20개 점검 항목 (4개 핵심 영역)</span>
     </div>
 
     <div class="card" id="qs" style="margin-top:4px;"></div>
@@ -802,9 +818,7 @@ footer {
   </div>
 </main>
 
-<!-- -----------------------------------------------------------
-     공유 전용 미리보기 & 4대 채널 모달
------------------------------------------------------------ -->
+<!-- 공유 전용 모달 -->
 <div id="share-modal" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-header">
@@ -812,13 +826,11 @@ footer {
       <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
     </div>
 
-    <!-- 공유 미리보기 카드 -->
     <div class="share-preview-box">
       <span class="share-preview-badge">전송 문구 미리보기</span>
       <div class="share-preview-content" id="modal-preview-text"></div>
     </div>
 
-    <!-- 4대 공유 채널 버튼 그리드 -->
     <div class="share-grid">
       <!-- 1. 카카오톡 -->
       <div class="share-item-btn" id="share-to-kakao">
@@ -863,69 +875,88 @@ var NAVER_FORM_URL = "https://naver.me/G0pu2btc";
 var KAKAO_URL = "https://pf.kakao.com/_xhGxhxib/chat";
 var SITE_SHARE_URL = "https://place.bacommu.com";
 
-var C = [
-  { text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 수치가 개선의 명확한 기준이 됩니다." },
-  { text: "전화 연결(스마트콜) 또는 톡톡이 활성화되어 있다", p: 3, tip: "스마트콜이나 톡톡을 켜 두면 문의 고객의 이탈을 즉각 방지할 수 있습니다." },
-  { text: "대표 사진 및 내부·외부 사진이 합쳐서 20장 이상 등록되어 있다", p: 2, tip: "외관·내부·대표 상품을 골고루 최소 20장 이상 채워 고객 신뢰도를 높이세요." },
-  { text: "소개글에 대표 키워드 및 [지역명 + 핵심 업종]이 자연스럽게 포함되어 있다", p: 2, tip: "첫 문장에 '지역+업종'을 넣고 매장의 핵심 강점과 방문 이유를 간결하게 적어 보세요." },
-  { text: "방문자 리뷰가 30개 이상 누적되어 있다", p: 2, tip: "방문 후 리뷰를 남길 수 있도록 매장 내 안내물(영수증 QR 등)을 적극 비치해 보세요." },
-  { text: "최근 한 달 이내에 새로운 방문자 리뷰가 등록되었다", p: 2, tip: "최근 리뷰가 멈춘 매장은 고객이 방문을 주저합니다. 매월 꾸준히 쌓이는 동선이 필수적입니다." },
-  { text: "블로그 리뷰 후기가 10개 이상 발행되어 있다", p: 2, tip: "실제 방문 후기가 축적되면 매장 신뢰도와 방문 전환율이 함께 상승합니다." },
-  { text: "가격 정보 또는 대표 시그니처 메뉴/상품이 정확히 등록되어 있다", p: 2, tip: "대표 상품과 가격을 선명한 사진과 함께 최신 상태로 등록해 투명성을 확보하세요." },
-  { text: "오시는 길 및 주차 가능 여부/대중교통 안내가 상세히 적혀 있다", p: 1, tip: "주차 가능 대수와 가장 가까운 지하철역·출구를 구체적으로 기재해 주세요." },
-  { text: "소식·이벤트 탭에 최근 1달 내 새 소식을 1회 이상 업로드했다", p: 1, tip: "소식 탭에 신상품, 혜택, 영업 일정을 올려 활발히 운영 중인 매장임을 어필하세요." },
-  { text: "고객 방문자 리뷰에 사장님 답글을 정성스럽게 달고 있다", p: 1, tip: "짧더라도 정성 어린 사장님 답글은 잠재 고객의 방문 결정을 크게 높입니다." },
-  { text: "최근 3개월 이내에 발행된 신규 블로그 리뷰가 있다", p: 1, tip: "네이버 검색 로봇은 최신성 문서를 우대합니다. 최근 3개월 내 신규 후기 확보가 필요합니다." },
-  { text: "최근 6개월 이내에 매장 최신 사진을 추가 등록했다", p: 1, tip: "계절과 신메뉴·신상품이 반영된 최신 사진으로 주기적으로 교체해 주세요." },
-  { text: "영업시간, 정기 휴무일, 브레이크타임이 빈틈없이 설정되어 있다", p: 1, tip: "휴무일과 브레이크타임까지 정확히 설정해 고객의 헛걸음과 부정적 평가를 방지하세요." },
-  { text: "인스타그램, 블로그, 또는 공식 웹사이트 링크가 연결되어 있다", p: 1, tip: "SNS와 웹사이트를 연결해 매장의 고유한 스토리와 브랜드 신뢰도를 강화하세요." },
-  { text: "대표 사진 1장이 매장의 매력을 한눈에 보여주는 고화질 컷이다", p: 2, tip: "어둡거나 흔들린 사진 대신, 채광이 좋고 선명한 대표 컷으로 첫인상을 사로잡으세요." }
+// ==========================================
+// 4대 그룹 정의
+// ==========================================
+var GROUPS = [
+  { id: "g1", title: "🔍 1. 검색 노출 & 기본 정보 (SEO)", desc: "네이버 검색 로봇이 매장 정보를 인식하는 기본 뼈대입니다." },
+  { id: "g2", title: "📸 2. 사진 & 비주얼 매력도", desc: "검색한 고객의 시선을 사로잡고 클릭을 유도하는 시각 요소입니다." },
+  { id: "g3", title: "⭐ 3. 리뷰 & 고객 신뢰 관리", desc: "고객이 방문을 최종 결심하게 만드는 후기 데이터입니다." },
+  { id: "g4", title: "🎯 4. 예약·문의 & 업종 특화 세팅", desc: "이탈 없이 실제 예약 및 매출 결제로 직결되는 전환 장치입니다." }
 ];
 
+// 공통 16개 문항 (그룹 번호 gid 지정)
+var C = [
+  // 그룹 1: 검색 노출 & 기본 정보 (5문항)
+  { gid: "g1", text: "대표 키워드(지역+업종)로 직접 검색해 우리 매장 순위를 확인해 봤다", p: 3, tip: "'지역+업종'으로 직접 검색해 순위를 기록해 두세요. 이 수치가 개선의 명확한 기준이 됩니다." },
+  { gid: "g1", text: "소개글에 대표 키워드 및 [지역명 + 핵심 업종]이 자연스럽게 포함되어 있다", p: 2, tip: "첫 문장에 '지역+업종'을 넣고 매장의 핵심 강점과 방문 이유를 간결하게 적어 보세요." },
+  { gid: "g1", text: "영업시간, 정기 휴무일, 브레이크타임이 빈틈없이 설정되어 있다", p: 1, tip: "휴무일과 브레이크타임까지 정확히 설정해 고객의 헛걸음과 부정적 평가를 방지하세요." },
+  { gid: "g1", text: "오시는 길 및 주차 가능 여부/대중교통 안내가 상세히 적혀 있다", p: 1, tip: "주차 가능 대수와 가장 가까운 지하철역·출구를 구체적으로 기재해 주세요." },
+  { gid: "g1", text: "가격 정보 또는 대표 시그니처 메뉴/상품이 정확히 등록되어 있다", p: 2, tip: "대표 상품과 가격을 선명한 사진과 함께 최신 상태로 등록해 투명성을 확보하세요." },
+
+  // 그룹 2: 사진 & 비주얼 매력도 (4문항)
+  { gid: "g2", text: "대표 사진 1장이 매장의 매력을 한눈에 보여주는 고화질 컷이다", p: 2, tip: "어둡거나 흔들린 사진 대신, 채광이 좋고 선명한 대표 컷으로 첫인상을 사로잡으세요." },
+  { gid: "g2", text: "대표 사진 및 내부·외부 사진이 합쳐서 20장 이상 등록되어 있다", p: 2, tip: "외관·내부·대표 상품을 골고루 최소 20장 이상 채워 고객 신뢰도를 높이세요." },
+  { gid: "g2", text: "최근 6개월 이내에 매장 최신 사진을 추가 등록했다", p: 1, tip: "계절과 신메뉴·신상품이 반영된 최신 사진으로 주기적으로 교체해 주세요." },
+  { gid: "g2", text: "인스타그램, 블로그, 또는 공식 웹사이트 링크가 연결되어 있다", p: 1, tip: "SNS와 웹사이트를 연결해 매장의 고유한 스토리와 브랜드 신뢰도를 강화하세요." },
+
+  // 그룹 3: 리뷰 & 고객 신뢰 관리 (5문항)
+  { gid: "g3", text: "방문자 리뷰가 30개 이상 누적되어 있다", p: 2, tip: "방문 후 리뷰를 남길 수 있도록 매장 내 안내물(영수증 QR 등)을 적극 비치해 보세요." },
+  { gid: "g3", text: "최근 한 달 이내에 새로운 방문자 리뷰가 등록되었다", p: 2, tip: "최근 리뷰가 멈춘 매장은 고객이 방문을 주저합니다. 매월 꾸준히 쌓이는 동선이 필수적입니다." },
+  { gid: "g3", text: "고객 방문자 리뷰에 사장님 답글을 정성스럽게 달고 있다", p: 1, tip: "짧더라도 정성 어린 사장님 답글은 잠재 고객의 방문 결정을 크게 높입니다." },
+  { gid: "g3", text: "블로그 리뷰 후기가 10개 이상 발행되어 있다", p: 2, tip: "실제 방문 후기가 축적되면 매장 신뢰도와 방문 전환율이 함께 상승합니다." },
+  { gid: "g3", text: "최근 3개월 이내에 발행된 신규 블로그 리뷰가 있다", p: 1, tip: "네이버 검색 로봇은 최신성 문서를 우대합니다. 최근 3개월 내 신규 후기 확보가 필요합니다." },
+
+  // 그룹 4: 예약·문의 공통 (2문항)
+  { gid: "g4", text: "전화 연결(스마트콜) 또는 톡톡이 활성화되어 있다", p: 3, tip: "스마트콜이나 톡톡을 켜 두면 문의 고객의 이탈을 즉각 방지할 수 있습니다." },
+  { gid: "g4", text: "소식·이벤트 탭에 최근 1달 내 새 소식을 1회 이상 업로드했다", p: 1, tip: "소식 탭에 신상품, 혜택, 영업 일정을 올려 활발히 운영 중인 매장임을 어필하세요." }
+];
+
+// 업종별 특화 4문항 (모두 그룹 4에 배치)
 var T = {
   food: {
     n: "식당·카페·디저트",
     q: [
-      { text: "대표 메뉴의 고화질 단독 사진이 각각 등록되어 있다", p: 3, tip: "시그니처 메뉴의 먹음직스러운 단독 사진을 고화질로 등록하세요." },
-      { text: "상세 메뉴판 이미지와 실시간 가격 정보가 최신화되어 있다", p: 2, tip: "가격 변동 사항이 정확히 반영된 최신 메뉴판 전체 이미지를 업로드해 주세요." },
-      { text: "웨이팅·예약·포장·단체석 등 이용 정보가 명시되어 있다", p: 1, tip: "포장, 웨이팅 방식, 단체석 예약 가능 여부를 소개글에 명확히 기재해 주세요." },
-      { text: "매장의 조명, 인테리어, 좌석 분위기 사진이 충분하다", p: 1, tip: "모임이나 데이트 등 방문 목적에 맞게 선택할 수 있도록 좌석 및 전경 사진을 보강하세요." }
+      { gid: "g4", text: "대표 메뉴의 고화질 단독 사진이 각각 등록되어 있다", p: 3, tip: "시그니처 메뉴의 먹음직스러운 단독 사진을 고화질로 등록하세요." },
+      { gid: "g4", text: "상세 메뉴판 이미지와 실시간 가격 정보가 최신화되어 있다", p: 2, tip: "가격 변동 사항이 정확히 반영된 최신 메뉴판 전체 이미지를 업로드해 주세요." },
+      { gid: "g4", text: "웨이팅·예약·포장·단체석 등 이용 정보가 명시되어 있다", p: 1, tip: "포장, 웨이팅 방식, 단체석 예약 가능 여부를 소개글에 명확히 기재해 주세요." },
+      { gid: "g4", text: "매장의 조명, 인테리어, 좌석 분위기 사진이 충분하다", p: 1, tip: "모임이나 데이트 등 방문 목적에 맞게 선택할 수 있도록 좌석 및 전경 사진을 보강하세요." }
     ]
   },
   beauty: {
     n: "뷰티샵",
     q: [
-      { text: "시술 포트폴리오(전후/완성 사진)가 30장 이상 등록되어 있다", p: 3, tip: "시술 전후 비교 컷과 디테일한 포트폴리오를 30장 이상 꾸준히 누적하세요." },
-      { text: "시술 옵션별 투명한 가격표가 플레이스에 공개되어 있다", p: 2, tip: "기본 시술 가격과 기장 추가 등 옵션 기준을 투명하게 안내해 심리적 장벽을 낮추세요." },
-      { text: "네이버 실시간 예약이 연동되어 있다", p: 3, tip: "뷰티샵은 네이버 실시간 예약 연동 여부가 매출 전환의 대부분을 결정합니다." },
-      { text: "예약 방법과 취소·노쇼 규정 안내가 명시되어 있다", p: 1, tip: "100% 예약제 여부, 노쇼 규정, 주차 안내를 사전에 명확히 고지하세요." }
+      { gid: "g4", text: "시술 포트폴리오(전후/완성 사진)가 30장 이상 등록되어 있다", p: 3, tip: "시술 전후 비교 컷과 디테일한 포트폴리오를 30장 이상 꾸준히 누적하세요." },
+      { gid: "g4", text: "시술 옵션별 투명한 가격표가 플레이스에 공개되어 있다", p: 2, tip: "기본 시술 가격과 기장 추가 등 옵션 기준을 투명하게 안내해 심리적 장벽을 낮추세요." },
+      { gid: "g4", text: "네이버 실시간 예약이 연동되어 있다", p: 3, tip: "뷰티샵은 네이버 실시간 예약 연동 여부가 매출 전환의 대부분을 결정합니다." },
+      { gid: "g4", text: "예약 방법과 취소·노쇼 규정 안내가 명시되어 있다", p: 1, tip: "100% 예약제 여부, 노쇼 규정, 주차 안내를 사전에 명확히 고지하세요." }
     ]
   },
   furniture: {
     n: "가구·쇼룸·인테리어",
     q: [
-      { text: "쇼룸 전경 및 실제 공간 연출(쇼룸 인테리어) 사진이 충분하다", p: 3, tip: "단품 가구 사진보다 실제 공간에 감각적으로 연출된 쇼룸 스타일링 컷을 보여주세요." },
-      { text: "신혼·입주가구 등 고객 타겟 상황별 맞춤 안내가 적혀 있다", p: 2, tip: "입주 아파트 공동구매, 신혼 패키지 등 상황별 맞춤 혜택을 소개글에 담아내세요." },
-      { text: "쇼룸 방문 상담 예약이 연결되어 있다", p: 2, tip: "1:1 프라이빗 가구 상담 예약을 연동해 방문율과 계약 성사율을 끌어올리세요." },
-      { text: "대표 가구 제품의 스펙과 치수 정보가 공개되어 있다", p: 1, tip: "가구 실측 사이즈와 친환경 자재 정보를 텍스트로 명시해 두세요." }
+      { gid: "g4", text: "쇼룸 전경 및 실제 공간 연출(쇼룸 인테리어) 사진이 충분하다", p: 3, tip: "단품 가구 사진보다 실제 공간에 감각적으로 연출된 쇼룸 스타일링 컷을 보여주세요." },
+      { gid: "g4", text: "신혼·입주가구 등 고객 타겟 상황별 맞춤 안내가 적혀 있다", p: 2, tip: "입주 아파트 공동구매, 신혼 패키지 등 상황별 맞춤 혜택을 소개글에 담아내세요." },
+      { gid: "g4", text: "쇼룸 방문 상담 예약이 연결되어 있다", p: 2, tip: "1:1 프라이빗 가구 상담 예약을 연동해 방문율과 계약 성사율을 끌어올리세요." },
+      { gid: "g4", text: "대표 가구 제품의 스펙과 치수 정보가 공개되어 있다", p: 1, tip: "가구 실측 사이즈와 친환경 자재 정보를 텍스트로 명시해 두세요." }
     ]
   },
   fitness: {
     n: "운동·교육 매장",
     q: [
-      { text: "센터 내부 운동 기구 및 샤워/편의시설 사진이 풍성하다", p: 2, tip: "운동 기구 브랜드와 락커, 샤워실 등 청결하고 쾌적한 시설 사진을 부각하세요." },
-      { text: "강사진의 공인 자격증 및 전문 이력이 프로필로 등록되어 있다", p: 3, tip: "회원들이 신뢰할 수 있도록 강사들의 실명, 자격증, 지도 경력을 등록하세요." },
-      { text: "체험 수업 신청 링크가 활성화되어 있다", p: 3, tip: "1회 체험권 또는 무료 상담 예약 링크를 열어두면 신규 유입이 크게 증가합니다." },
-      { text: "수업 커리큘럼별 명확한 프로그램 안내가 적혀 있다", p: 1, tip: "초보자 코스, 체형 교정 등 목적별 맞춤 프로그램 내용을 알기 쉽게 기재해 주세요." }
+      { gid: "g4", text: "센터 내부 운동 기구 및 샤워/편의시설 사진이 풍성하다", p: 2, tip: "운동 기구 브랜드와 락커, 샤워실 등 청결하고 쾌적한 시설 사진을 부각하세요." },
+      { gid: "g4", text: "강사진의 공인 자격증 및 전문 이력이 프로필로 등록되어 있다", p: 3, tip: "회원들이 신뢰할 수 있도록 강사들의 실명, 자격증, 지도 경력을 등록하세요." },
+      { gid: "g4", text: "체험 수업 신청 링크가 활성화되어 있다", p: 3, tip: "1회 체험권 또는 무료 상담 예약 링크를 열어두면 신규 유입이 크게 증가합니다." },
+      { gid: "g4", text: "수업 커리큘럼별 명확한 프로그램 안내가 적혀 있다", p: 1, tip: "초보자 코스, 체형 교정 등 목적별 맞춤 프로그램 내용을 알기 쉽게 기재해 주세요." }
     ]
   },
   etc: {
     n: "공방·스튜디오·침구·기타 매장",
     q: [
-      { text: "완성작 및 서비스 결과물 포트폴리오 사진이 등록되어 있다", p: 3, tip: "고객 완성 작품이나 클래스 수업 현장 사진을 생생하게 공유하세요." },
-      { text: "클래스/서비스별 세부 커리큘럼과 금액이 명시되어 있다", p: 2, tip: "소요 시간, 준비물, 금액이 포함된 커리큘럼을 투명하게 공개하세요." },
-      { text: "예약 신청 및 1:1 톡톡/전화 상담 동선이 구축되어 있다", p: 2, tip: "네이버 톡톡 상담과 예약 시스템을 상시 열어두어 문의를 즉각 흡수하세요." },
-      { text: "우리 매장만의 차별화된 스토리 및 방문 이유가 소개되어 있다", p: 1, tip: "우리 매장만의 철학과 특별한 서비스 경험을 브랜드 소개글에 녹여내세요." }
+      { gid: "g4", text: "완성작 및 서비스 결과물 포트폴리오 사진이 등록되어 있다", p: 3, tip: "고객 완성 작품이나 클래스 수업 현장 사진을 생생하게 공유하세요." },
+      { gid: "g4", text: "클래스/서비스별 세부 커리큘럼과 금액이 명시되어 있다", p: 2, tip: "소요 시간, 준비물, 금액이 포함된 커리큘럼을 투명하게 공개하세요." },
+      { gid: "g4", text: "예약 신청 및 1:1 톡톡/전화 상담 동선이 구축되어 있다", p: 2, tip: "네이버 톡톡 상담과 예약 시스템을 상시 열어두어 문의를 즉각 흡수하세요." },
+      { gid: "g4", text: "우리 매장만의 차별화된 스토리 및 방문 이유가 소개되어 있다", p: 1, tip: "우리 매장만의 철학과 특별한 서비스 경험을 브랜드 소개글에 녹여내세요." }
     ]
   }
 };
@@ -977,6 +1008,9 @@ function updateCount() {
   $("cnt").textContent = "점검 완료 " + checkedCount + " / 20개";
 }
 
+// -------------------------------------------------------------
+// [진단 시작 및 4대 그룹 렌더링]
+// -------------------------------------------------------------
 function startDiagnostic(k) {
   currentTypeKey = hasType(k) ? k : "etc";
   var d = T[currentTypeKey];
@@ -984,11 +1018,38 @@ function startDiagnostic(k) {
   
   $("t2").textContent = d.n + " 플레이스 자가진단";
   $("b-sub").textContent = d.n + " • 총 20개 문항 체크";
-  
-  $("qs").innerHTML = currentQuestions.map(function(item, i) {
-    return '<label class="q"><input type="checkbox" data-index="' + i + '"><span>'+item.text+'</span></label>';
-  }).join("");
-  
+
+  // 그룹별 렌더링 HTML 생성
+  var html = "";
+  var globalIdx = 0;
+
+  GROUPS.forEach(function(grp) {
+    var grpItems = [];
+    currentQuestions.forEach(function(item, idx) {
+      if (item.gid === grp.id) {
+        grpItems.push({ item: item, idx: idx });
+      }
+    });
+
+    if (grpItems.length > 0) {
+      html += '<div class="q-group">';
+      html +=   '<div class="q-group-head">';
+      html +=     '<span class="q-group-title">' + grp.title + '</span>';
+      html +=     '<span class="q-group-count">' + grpItems.length + '문항</span>';
+      html +=   '</div>';
+
+      grpItems.forEach(function(entry) {
+        html += '<label class="q">';
+        html +=   '<input type="checkbox" data-index="' + entry.idx + '">';
+        html +=   '<span>' + entry.item.text + '</span>';
+        html += '</label>';
+      });
+
+      html += '</div>';
+    }
+  });
+
+  $("qs").innerHTML = html;
   updateCount();
   showStep(2);
 }
@@ -1018,16 +1079,18 @@ $("unit-slider").oninput = function() {
   updateLossCalc(score);
 };
 
+// 결과 보기 클릭
 $("go").onclick = function() {
   var inputs = document.querySelectorAll("#qs input");
   var score = 0;
   var miss = [];
   
-  inputs.forEach(function(el, i) {
+  inputs.forEach(function(el) {
+    var idx = parseInt(el.dataset.index, 10);
     if (el.checked) {
       score += 5;
     } else {
-      miss.push(currentQuestions[i]);
+      miss.push(currentQuestions[idx]);
     }
   });
 
@@ -1137,7 +1200,7 @@ function getRankInsight(rankNum) {
     return {
       bg: "rgba(47, 74, 60, 0.08)",
       color: "var(--pt)",
-      text: "👑 [1페이지 최상위권] 상위권에 안착해 있습니다! 단, 정기적인 리뷰와 실시간 관리가 멈추면 언제든 밀려납니다."
+      text: "👑 [1페이지 최상위권] 상위권에 안착해 있습니다! 단, 정기적인 리뷰와 최신성 관리가 멈추면 언제든 밀려납니다."
     };
   }
 }
@@ -1201,7 +1264,7 @@ $("btn-rank-check").onclick = function() {
         return;
       }
 
-      shareCtx = { kind: "rank", rank: data.rankNum, kw: data.keyword };
+      shareCtx = { kind: "rank", rank: data.rankNum, kw: data.keyword, name: data.name };
 
       $("res-store-name").textContent = "분석 매장: " + data.name;
       $("res-keyword").innerHTML = "기준 키워드: [" + esc(data.keyword) + "]" + (data.keywordAuto ? " <small style='color:var(--sub); font-weight:400;'>(자동 추정)</small>" : "");
@@ -1236,7 +1299,7 @@ $("btn-rank-check").onclick = function() {
 };
 
 // -------------------------------------------------------------
-// [단일 링크 & 4대 채널 공유 연동]
+// [심리학 기반 단일 링크 카피 & 4대 채널 공유]
 // -------------------------------------------------------------
 var shareCtx = { kind: "site" };
 
@@ -1248,13 +1311,26 @@ function buildShareMessage() {
   var url = shareUrl(), c = shareCtx;
   if (c.kind === "rank" && c.rank) {
     var kw = c.kw ? "'" + c.kw + "' " : "";
-    if (c.rank <= 3) return "👑 우리 동네 1등 매장 네이버 플레이스 순위 조회 사이트 발견!\n\n우리 가게 " + kw + "검색하니 " + c.rank + "위 안착해 있네요.\n대행사 유료 프로그램 쓸 필요 없이 무료로 바로 나옵니다 👇\n" + url;
-    if (c.rank <= 10) return "⚡ 우리 가게 네이버 지도 " + kw + c.rank + "위 나오네요! 1등까지 한 끗 차이입니다.\n\n사장님 가게는 지금 몇 위일까요? 링크만 넣으면 1분 만에 무료 조회돼요 👇\n" + url;
-    return "😱 [사장님들 필수] 우리 가게 네이버 지도 " + kw + "검색했더니 " + c.rank + "위 밀려있네요…\n\n길 건너 경쟁 매장에 손님 다 뺏기기 전에 사장님 가게도 무료로 돌려보세요 👇\n" + url;
+    var store = c.name ? "[" + c.name + "] " : "우리 매장 ";
+
+    if (c.rank <= 3) {
+      return "👑 " + store + "네이버 지도 " + kw + "검색하니 실시간 " + c.rank + "위 안착해 있네요!\n\n대행사 유료 프로그램 쓸 필요 없이 링크만 넣으면 1분 만에 무료 조회돼요. 사장님 가게도 확인해 보세요 👇\n" + url;
+    }
+    if (c.rank <= 10) {
+      return "⚡ " + store + "네이버 지도 " + kw + c.rank + "위 나오네요! 1등까지 한 끗 차이입니다 😤\n\n사장님 가게는 지금 몇 위일까요? 링크만 넣으면 1분 만에 무료 조회돼요 👇\n" + url;
+    }
+    return "😱 우리 매장 네이버 지도 " + kw + "검색했더니 " + c.rank + "위까지 밀려있네요… 길 건너 경쟁 매장에 손님 다 뺏기게 생겼습니다.\n\n사장님 매장은 1페이지 안에 잘 나오는지 무료로 1분 만에 조회해 보세요 👇\n" + url;
   }
-  if (c.kind === "rank") return "😱 네이버 지도 검색에서 100위 밖이면 손님들이 아예 못 찾는 상태래요!\n\n사장님 매장은 몇 위인지 링크만 넣어서 1분 무료 조회해 보세요 👇\n" + url;
-  if (c.kind === "score") return "📊 우리 매장 네이버 플레이스 종합 점수 " + c.score + "점 나왔습니다!\n\n사장님 가게는 몇 점일까요? 2분이면 끝나는 무료 자가진단 👇\n" + url;
-  return "🔍 [사장님 공유] 네이버 플레이스 실시간 순위 & 2분 자가진단 무료 툴입니다.\n\n링크만 넣으면 대표 키워드 순위와 빠진 설정을 바로 알려주네요 👇\n" + url;
+
+  if (c.kind === "rank") {
+    return "🔍 [사장님 단톡방 공유] 네이버 지도 실시간 순위 1분 무료 조회기입니다.\n\n지도에서 100위 밖으로 밀려나면 손님 유입이 완전히 끊긴대요. 매장 링크만 넣으면 무료로 실시간 등수 확인 가능합니다 👇\n" + url;
+  }
+
+  if (c.kind === "score") {
+    return "📊 우리 매장 네이버 플레이스 종합 점수 " + c.score + "점 나왔습니다!\n\n사장님 가게는 몇 점일까요? 2분이면 끝나는 무료 자가진단 👇\n" + url;
+  }
+
+  return "🔍 [사장님 공유] 네이버 플레이스 실시간 순위 & 2분 자가진단 무료 솔루션입니다.\n\n링크만 넣으면 대표 키워드 순위와 빠진 설정을 바로 알려주네요 👇\n" + url;
 }
 
 function openShareModal() {
